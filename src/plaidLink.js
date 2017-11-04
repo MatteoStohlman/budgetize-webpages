@@ -53,7 +53,7 @@ class PlaidLink extends Component{
       })
     })
     .then(response=>response.text())
-    .then(data=>{console.log(data)})
+    .then(data=>{console.log('TEST',data)})
   }
   handleLinkOnLoad(){
     this.state.onLoad && this.state.onLoad();
