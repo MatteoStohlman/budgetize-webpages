@@ -1,5 +1,6 @@
 /*global Plaid*/
 import React, { Component, PropTypes } from 'react' 
+import {Button} from 'react-bootstrap'
 
 class PlaidLink extends Component{
   constructor(props){
@@ -74,14 +75,17 @@ class PlaidLink extends Component{
   render(){
     this.onScriptLoaded()
     return (
-      <button
-        onClick={this.handleOnClick}
-        disabled={this.state.disabledButton}
-        style={this.state.style}
-        className={this.state.className}
-      >
+      <div>
+        <Button
+          onClick={this.handleOnClick}
+          disabled={this.state.disabledButton}
+          style={this.state.style}
+          className={this.state.className}
+        >
         <span>{this.state.buttonText}</span>
-      </button>
+      </Button>
+      </div>
+      
     )
   }
 }
