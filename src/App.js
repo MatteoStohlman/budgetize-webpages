@@ -16,6 +16,7 @@
   //COMPONENTS
     import Main from './Main'
     import PlaidLink from './plaidLink'
+    import { configureHistory } from 'configureHistory'
 
 function onAuthRequired({history}) {
   history.push('/login');
@@ -25,13 +26,7 @@ const toastStyle={
     colorDefault: 'black',
   }
 }
-
-const history = ()=> {
-  return window.matchMedia('(display-mode: standalone)').matches
-    ? createHashHistory()
-    : createBrowserHistory()
-}
-
+const history = configureHistory()
 class App extends Component {
   render() {
     return(
