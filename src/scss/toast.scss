@@ -1,0 +1,18 @@
+// .default-toast{
+//   background-color: white;
+//   z-index: 999999 !important;
+//   &.warn{
+//     background-color: #F2C932;
+//   }
+//   &.error{
+//     background-color: #E65748;
+//   }
+//   &.success{
+//     background-color: #20C326;
+//   }
+// }
+.default-toast-progress{
+  background: none;
+  background-color: white;
+  opacity: .8;
+}
