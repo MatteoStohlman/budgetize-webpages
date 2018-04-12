@@ -5,6 +5,7 @@
     import {connect} from 'react-redux';
     import {bindActionCreators} from 'redux';
     import { BrowserRouter as Router, Route } from 'react-router-dom';
+    import { createBrowserHistory, createHashHistory } from 'history'
   //STYLE
     import './App.css'
     //import 'react-toastify/dist/ReactToastify.min.css'
@@ -24,6 +25,13 @@ const toastStyle={
     colorDefault: 'black',
   }
 }
+
+const history = ()=> {
+  return window.matchMedia('(display-mode: standalone)').matches
+    ? createHashHistory()
+    : createBrowserHistory()
+}
+
 class App extends Component {
   render() {
     return(
@@ -33,7 +41,7 @@ class App extends Component {
             progressClassName='default-toast-progress'
             style={{zIndex:999999,colorDefault:'fff'}}
           />
-          <Router>
+          <Router history={history}>
             <div>
               <Route path='/' exact={true} component={Main} />
               <Route path='/plaid' exact={true} component={PlaidLink} />
