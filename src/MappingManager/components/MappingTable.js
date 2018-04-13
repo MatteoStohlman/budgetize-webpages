@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import TextField from 'material-ui/TextField';
 import {withState,compose} from 'recompose';
 import PropTypes from 'prop-types';
@@ -19,8 +21,23 @@ const MappingTable = ({
   }) => {
     const columns = [
       {
-        Header: 'Match Type',
-        accessor: 'match_type',
+        Header: 'Matching On',
+        id: 'match_type',
+        accessor: (row)=>{
+          switch(row.match_type){
+            case 'name':
+              return 'Vendor Name'
+              break;
+            case 'plaidTag':
+              return 'Smart Categories'
+              break;
+            case 'id':
+              return 'Individual Transactions'
+              break;
+            default:
+              return row.match_type
+          }
+        }
       },
       {
         Header: 'Keyword',
@@ -33,7 +50,6 @@ const MappingTable = ({
       {
         width:35,
         Cell:({row})=>{
-          console.log(row)
           return(
             <IconMenu
               iconButtonElement={<MoreVertIcon/>}
@@ -86,7 +102,7 @@ const MappingTable = ({
           <Col xs={12}>
             <ReactTable
               data={mappings}
-              noDataText={isLoading?'Loading Mappings':'No Mappings Found'}
+              noDataText={isLoading?'Loading Transactions':'No Transactions Found'}
               columns={columns}
               className="-striped -highlight"
               defaultPageSize={20}
@@ -105,11 +121,19 @@ const MappingTable = ({
       </div>
     )
 }
+const mapStateToProps = state => ({
 
+})
+function matchDispatchToProps(dispatch){
+  return  bindActionCreators({
+
+  },dispatch)
+}
 // MappingTable.propTypes={
 //   label:PropTypes.string.isRequired
 // }
 
 export default compose(
+  connect(mapStateToProps,matchDispatchToProps),
   withState('snackText','snackToast',false),
 )(MappingTable)

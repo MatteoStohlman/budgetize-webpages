@@ -8,10 +8,10 @@ import numeral from 'numeral'
 const DollarValue = ({value,type,style,...props})=> {
     switch (type) {
       case 'fancy':
-        return(<span style={{color:value>0?'green':'red',fontSize:18,fontWeight:'bold',...style}}>{numeral(value).format('$0.00')}</span>)
+        return(<span style={{color:value>0?'green':'red',fontSize:18,fontWeight:'bold',...style}}>{numeral(value).format('$0,0.00')}</span>)
         break;
       default:
-        return(<span style={{...style}}>{numeral(value).format('$0.00')}</span>)
+        return(<span style={{...style}}>{numeral(value).format('$0,0.00')}</span>)
 
     }
 }

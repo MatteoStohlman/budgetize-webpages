@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import TextField from 'material-ui/TextField';
 import {withState,compose} from 'recompose';
 import PropTypes from 'prop-types';
@@ -10,13 +12,18 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Snackbar from 'material-ui/Snackbar';
 import {Row,Col} from 'react-bootstrap'
 import RefreshIndicator from 'material-ui/RefreshIndicator';
-import {deleteBudgetLine,addBudgetLine} from 'api/budget'
+import {deleteBudgetLine} from 'api/budget'
 import {toast} from 'react-toastify'
 import numeral from 'numeral'
+import moment from 'moment'
+import {DATE} from 'CONSTANTS'
+//ACTIONS//
+  import {toggleAddBudget} from 'BudgetManager/actions'
 const BudgetTable = ({
   budget,loading,
   callback,categories,
   snackText,snackToast,
+  toggleAddBudget,
   ...props
   }) => {
     function handleDelete(id,name){
@@ -35,7 +42,7 @@ const BudgetTable = ({
     const columns = [
       {
         Header: 'Name',
-        accessor: 'category'
+        accessor: 'categoryName'
       },
       {
         Header:'Value',
@@ -67,10 +74,27 @@ const BudgetTable = ({
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
             >
               <MenuItem primaryText="Delete" onClick={()=>handleDelete(row._original.id,row.categoryName)}/>
+              <MenuItem primaryText="Edit" onClick={()=>toggleAddBudget(true,{id:row._original.id,category:{name:row._original.categoryName,id:row._original.categoryId},value:row._original.value})}/>
             </IconMenu>
           )
         }
       }
+    ]
+    const transactionColumns = [
+      {
+        Header: 'Name',
+        accessor: 'name'
+      },
+      {
+        Header: 'Date',
+        id: 'date',
+        accessor: row=>moment(row.date).format(DATE.formats.pretty)
+      },
+      {
+        Header: 'value',
+        id: 'value',
+        accessor: row=>numeral(row.value).format('$0,0.00')
+      },
     ]
     const isLoading = loading && budget.length===0;
     return (
@@ -105,8 +129,19 @@ const BudgetTable = ({
               noDataText={isLoading?'Loading Budget':'No Budget Found'}
               className="-striped -highlight"
               defaultPageSize={15}
-              style={{
-                //height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+              SubComponent={row => {
+                return (
+                  <div style={{padding:25,backgroundColor:"#e0e0e0"}}>
+                    <ReactTable
+                      style={{backgroundColor:'white'}}
+                      data={row.original.transactions}
+                      columns={transactionColumns}
+                      noDataText="No Transactions"
+                      className="-striped -highlight"
+                      defaultPageSize={10}
+                    />
+                  </div>
+                )
               }}
             />
           </Col>
@@ -124,7 +159,15 @@ const BudgetTable = ({
 // TextInput.propTypes={
 //   label:PropTypes.string.isRequired
 // }
+const mapStateToProps = state => ({
+})
+function matchDispatchToProps(dispatch){
+  return  bindActionCreators({
+    toggleAddBudget:toggleAddBudget
+  },dispatch)
+}
 
 export default compose(
+  connect(mapStateToProps,matchDispatchToProps),
   withState('snackText','snackToast',false),
 )(BudgetTable)

@@ -34,13 +34,14 @@ export function deleteBudgetLine(id){
           });
 }
 
-export function addBudgetLine(month,year,value,categoryId,userId){
+export function addBudgetLine(month,year,value,categoryId,userId,budgetId){
   var requestUrl='https://script.google.com/macros/s/AKfycbzyO8Lg1ciQYnhSV47k8aakSXAKSLC01v_yCZtV1FVYdjphKkM/exec?action=addBudgetLine'
   requestUrl+='&userId='+(userId?userId:JSON.parse(localStorage.getItem('token')).userId)
   requestUrl+='&month='+month
   requestUrl+='&year='+year
   requestUrl+='&value='+value
   requestUrl+='&categoryId='+categoryId
+  if(budgetId)requestUrl+='&budgetId='+budgetId
   requestUrl+='&authorization='+JSON.parse(localStorage.getItem('token')).value
   return fetch(requestUrl,{
                             method: 'GET',

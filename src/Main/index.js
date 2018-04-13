@@ -41,11 +41,11 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
       anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
     >
       {isLoggedIn && <MenuItem primaryText="Home" rightIcon={<NotificationsBadge style={{marginRight:3}}/>} onClick={()=>updatePage('Home')}/>}
-      {isLoggedIn && <MenuItem primaryText="Category Manager" onClick={()=>updatePage('CategoryManager')}/>}
-      {isLoggedIn && <MenuItem primaryText="Mapping Manager" onClick={()=>updatePage('MappingManager')}/>}
-      {isLoggedIn && <MenuItem primaryText="Transactions Manager" onClick={()=>updatePage('TransactionsManager')}/>}
-      {isLoggedIn && <MenuItem primaryText="Budget Manager" onClick={()=>updatePage('BudgetManager')}/>}
-      {isLoggedIn && <MenuItem primaryText="Sign Out" onClick={()=>logout()}/>}
+      {isLoggedIn && <MenuItem primaryText="Categories" onClick={()=>updatePage('CategoryManager')}/>}
+      {isLoggedIn && <MenuItem primaryText="Mappings" onClick={()=>updatePage('MappingManager')}/>}
+      {isLoggedIn && <MenuItem primaryText="Transactions" onClick={()=>updatePage('TransactionsManager')}/>}
+      {isLoggedIn && <MenuItem primaryText="Budget" onClick={()=>updatePage('BudgetManager')}/>}
+      {isLoggedIn && <MenuItem primaryText="Log Out" onClick={()=>logout()}/>}
       {!isLoggedIn && <MenuItem primaryText='Login' onClick={()=>updatePage('Login')}/>}
     </IconMenu>
   );
@@ -96,5 +96,5 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  withState('page','updatePage','TransactionsManager'),
+  withState('page','updatePage','Home'),
 )(Home)

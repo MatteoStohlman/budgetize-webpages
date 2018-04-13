@@ -39,10 +39,19 @@ const AddMapping =
   }) => {
     function handleSubmit(){
       updateIsSubmitting(true,()=>{
-        addMapping(keyword,matchType,category)
+        var finalKeyword = keyword?keyword:initialValues.keyword?initialValues.keyword:false
+        var finalMatchType = matchType?matchType:initialValues.matchType?initialValues.matchType:false
+        var finalCategory = category?category:initialValues.category?initialValues.category:false
+        console.log(finalKeyword,finalCategory,finalMatchType)
+        if(!finalKeyword || !finalMatchType || !finalCategory){
+          toast.error('Failed To Map')
+          return false
+        }
+        addMapping(finalKeyword,finalMatchType,finalCategory)
         .then(response=>{
           if(response.status){
             toast.success('Mapping added, running categorizer')
+            toggle();
             return runCategorizer()
           }
           else
@@ -50,7 +59,6 @@ const AddMapping =
         })
         .then(response=>{
           if(response.status){
-            toggle();
             updateIsSubmitting();
             refreshData();
             toast.success('Categorizer complete. '+response.message)
@@ -116,6 +124,7 @@ const AddMapping =
       }
       if(matchType=='id' && guessTransactions){
         updateKeyword(guessTransactions[0].transaction_id)
+        updateShowAutocomplete(false)
       }
     }
     function autocompleteValue(){

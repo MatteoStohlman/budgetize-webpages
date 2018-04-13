@@ -38,20 +38,31 @@ const AddBudget =
     category,updateCategory,
     toggleAddBudget,
     showAddCategory,updateShowAddCategory,
+    id,updateId,
     ...props
   }) => {
-    function handleSubmit(){
-      //console.log(category,initialValues)
+    function getCategoryId(){
       if(category.id)
         var categoryId=category.id
       else if(initialValues.category && initialValues.category.id)
         var categoryId = initialValues.category.id
       else
         var categoryId=category
-      console.log(categoryId)
+      return categoryId
+    }
+    function getBudgetId(){
+      if(id)
+        var budgetId=id
+      else if(initialValues.id)
+        var budgetId=initialValues.id
+      else
+        var budgetId=id
+      return budgetId
+    }
+    function handleSubmit(){
+      //console.log(category,initialValues)
       updateIsSubmitting(true,()=>{
-        console.log(categoryId)
-        addBudgetLine(month,2018,value,categoryId).then(response=>{
+        addBudgetLine(month,2018,value,getCategoryId(),false,getBudgetId()).then(response=>{
           if(response.status){
             toggleAddBudget();
             updateIsSubmitting();
@@ -140,6 +151,7 @@ const AddBudget =
               hintText="200,-500"
               floatingLabelText="Budget Value"
               fullWidth={true}
+              value={value?value:initialValues.value?initialValues.value:''}
               onChange={(event,value)=>updateValue(value)}
               disabled={isSubmitting}
             />
@@ -165,6 +177,7 @@ function matchDispatchToProps(dispatch){
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
   withState('showAddCategory','updateShowAddCategory',false),
+  withState('id','updateId',({initialValues})=>initialValues&&initialValues.id?initialValues.id:false),
   withState('month','updateMonth',({initialValues})=>initialValues&&initialValues.month?initialValues.month:moment().format('M')-1),
   withState('category','updateCategory',({initialValues})=>initialValues && initialValues.category?initialValues.category:false),
   withState('value','updateValue',({initialValues})=>initialValues&&initialValues.value?initialValues.value:false),

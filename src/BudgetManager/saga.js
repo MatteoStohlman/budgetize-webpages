@@ -5,11 +5,33 @@
 //APIs
   import {getUserBudget} from 'api/budget'
 
+function splitTransactionsString(transactionsString){
+  if(!transactionsString){return []}
+  var transactions = transactionsString.split('|||')
+  let newBudgetLineTransactions=[]
+  transactions.map((transaction)=>{
+    var transValues = transaction.split("~")
+    newBudgetLineTransactions.push({
+      name:transValues[0],
+      date:transValues[1],
+      value:transValues[2]
+    })
+  })
+  return newBudgetLineTransactions
+}
+
 function* updateBudgetFlow(action){
   try {
     var {month,year} = action
     const response = yield call(getUserBudget,false,month,year)
     if(response.status){
+      //START Convert Transactions String to Transactions Array
+        response.payload.map((budgetLine,budgetIndex)=>{
+          budgetLine.transactionsString=budgetLine.transactions
+          var transactionsArray = splitTransactionsString(budgetLine.transactionsString)
+          budgetLine.transactions=transactionsArray
+        })
+      //END Convert Transactions String to Transactions Array
       yield put({type:'UPDATE_BUDGET_SUC',data:response.payload})
     }
 

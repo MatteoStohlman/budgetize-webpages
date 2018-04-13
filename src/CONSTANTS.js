@@ -5,7 +5,7 @@ export const MONTHS = {
 
 export const DATE = {
   formats:{
-    pretty:"MMM Do YY",
+    pretty:"MMM Do, YYYY",
     db:"MM-DD-YYYY HH:mm"
   }
 }

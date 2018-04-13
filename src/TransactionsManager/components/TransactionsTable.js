@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import TextField from 'material-ui/TextField';
 import {withState,compose} from 'recompose';
 import PropTypes from 'prop-types';
@@ -16,6 +18,7 @@ import AddMapping from 'MappingManager/components/AddMapping'
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {DATE} from 'CONSTANTS'
 //ACTIONS//
+import {ignoreTransaction} from '../actions'
 
 const TransactionsTable = ({
     transactions,updateTransactions,
@@ -23,6 +26,7 @@ const TransactionsTable = ({
     showCreateMapping,updateShowCreateMapping,
     loading,refreshCallback,
     categories,filter,
+    ignoreTransaction,
     ...props
   }) => {
     const columns = [
@@ -69,6 +73,7 @@ const TransactionsTable = ({
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
             >
               <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[row._original]})}/>
+              <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(row._original.id)}/>
             </IconMenu>
           )
         }
@@ -124,7 +129,7 @@ const TransactionsTable = ({
               className="-striped -highlight"
               defaultPageSize={20}
               style={{
-                height: "600px" // This will force the table body to overflow and scroll, since there is not enough room
+                //height: "600px" // This will force the table body to overflow and scroll, since there is not enough room
               }}
             />
           </Col>
@@ -146,12 +151,21 @@ const TransactionsTable = ({
       </div>
     )
 }
+const mapStateToProps = state => ({
+
+})
+function matchDispatchToProps(dispatch){
+  return  bindActionCreators({
+    ignoreTransaction:ignoreTransaction
+  },dispatch)
+}
 
 // MappingTable.propTypes={
 //   label:PropTypes.string.isRequired
 // }
 
 export default compose(
+  connect(mapStateToProps,matchDispatchToProps),
   withState('snackText','snackToast',false),
   withState('showCreateMapping','updateShowCreateMapping',{active:false})//Shape:{active:bool,data:{transactionEntity}}
 )(TransactionsTable)

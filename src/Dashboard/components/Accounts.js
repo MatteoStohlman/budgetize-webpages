@@ -13,6 +13,13 @@ import CircularProgress from 'material-ui/CircularProgress';
 import DollarValue from 'components/DollarValue'
 
 const Accounts = ({openPlaidLink,bankAccounts,isLoading,...props}) => {
+    function positiveOrNegative(value,accountType=false){
+      var negativeTypes = ['loan','credit']
+      if(negativeTypes.indexOf(accountType)>=0)
+        return Math.abs(value)*-1
+      else
+        return Math.abs(value)
+    }
     return (
       <div style={{height:'100%'}}>
         <div style={{height:'15%',width:'100%',overflow:'hidden',marginTop:0,marginBottom:0}}>
@@ -28,7 +35,7 @@ const Accounts = ({openPlaidLink,bankAccounts,isLoading,...props}) => {
                   primaryText={bankAccount.account_name}
                   secondaryText={bankAccount.institution_alias?bankAccount.institution_alias:bankAccount.institution_name}
                 >
-                <DollarValue type='fancy' value={bankAccount.balance_current} style={{float:'right',marginTop:10}}/>
+                <DollarValue type='fancy' value={positiveOrNegative(bankAccount.balance_current,bankAccount.account_type)} style={{float:'right',marginTop:10}}/>
                 </ListItem>
               )
             })
