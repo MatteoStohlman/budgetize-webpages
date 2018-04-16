@@ -18,7 +18,10 @@ import AddMapping from 'MappingManager/components/AddMapping'
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {DATE} from 'CONSTANTS'
 //ACTIONS//
-import {ignoreTransaction} from '../actions'
+  import {ignoreTransaction} from '../actions'
+  import {controlComponent} from 'TransactionsManager/actions'
+//COMPONENTS//
+  import AddNotes from 'TransactionsManager/components/AddNotes'
 
 const TransactionsTable = ({
     transactions,updateTransactions,
@@ -26,12 +29,13 @@ const TransactionsTable = ({
     showCreateMapping,updateShowCreateMapping,
     loading,refreshCallback,
     categories,filter,
+    controlComponent,
     ignoreTransaction,
     ...props
   }) => {
     const columns = [
       {
-        Header: 'Transaction Name',
+        Header: 'Name',
         accessor: 'name',
       },
       {
@@ -55,13 +59,17 @@ const TransactionsTable = ({
         ),
       },
       {
-        Header: 'Transaction Date',
+        Header: 'Date',
         id:'transactionDate',
         accessor: ({transaction_date})=>(
           moment(transaction_date).isValid()?
             moment(transaction_date).format(DATE.formats.pretty):
             null
         ),
+      },
+      {
+        Header: 'Notes',
+        accessor: 'notes',
       },
       {
         width:35,
@@ -74,6 +82,7 @@ const TransactionsTable = ({
             >
               <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[row._original]})}/>
               <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(row._original.id)}/>
+              <MenuItem primaryText="Add Notes" onClick={()=>controlComponent('AddNotes',{isOpen:true,transaction:row._original,value:row._original.notes})}/>
             </IconMenu>
           )
         }
@@ -98,6 +107,7 @@ const TransactionsTable = ({
     }
     return(
       <div>
+        <AddNotes/>
         <Row>
           <Col xs={12}>
             <div style={{width:'40%',display:'inline-block'}}>
@@ -156,7 +166,8 @@ const mapStateToProps = state => ({
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({
-    ignoreTransaction:ignoreTransaction
+    ignoreTransaction:ignoreTransaction,
+    controlComponent:controlComponent,
   },dispatch)
 }
 

@@ -12,9 +12,11 @@ function splitTransactionsString(transactionsString){
   transactions.map((transaction)=>{
     var transValues = transaction.split("~")
     newBudgetLineTransactions.push({
-      name:transValues[0],
-      date:transValues[1],
-      value:transValues[2]
+      id:transValues[0],
+      name:transValues[1],
+      date:transValues[2],
+      value:transValues[3],
+      notes:transValues[4],
     })
   })
   return newBudgetLineTransactions

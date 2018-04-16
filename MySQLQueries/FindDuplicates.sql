@@ -1,0 +1,1 @@
+SELECT count(name),name,value FROM budgetize.transactions AS T WHERE date_deleted IS NULL group by name,value order by count(name) desc;

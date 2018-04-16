@@ -14,3 +14,10 @@ export function toggleAddBudget(override=null,initialValues=false){
 		initialValues,
 	}
 }
+
+export function removeTransactionFromBudget(transactionId){
+	return{
+		type:'REMOVE_TRANS_FROM_BUDGET',
+		transactionId
+	}
+}

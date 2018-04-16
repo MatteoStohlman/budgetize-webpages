@@ -17,13 +17,20 @@ import {toast} from 'react-toastify'
 import numeral from 'numeral'
 import moment from 'moment'
 import {DATE} from 'CONSTANTS'
+import {ignoreTransaction} from 'TransactionsManager/actions'
 //ACTIONS//
   import {toggleAddBudget} from 'BudgetManager/actions'
+  import {controlComponent as controlAddNotes} from 'TransactionsManager/actions'
+//COMPONENTS//
+  import AddNotes from 'TransactionsManager/components/AddNotes'
+
+
 const BudgetTable = ({
   budget,loading,
   callback,categories,
   snackText,snackToast,
-  toggleAddBudget,
+  toggleAddBudget,ignoreTransaction,
+  controlAddNotes,
   ...props
   }) => {
     function handleDelete(id,name){
@@ -95,10 +102,30 @@ const BudgetTable = ({
         id: 'value',
         accessor: row=>numeral(row.value).format('$0,0.00')
       },
+      {
+        Header: 'Notes',
+        accessor: 'notes'
+      },
+      {
+        width:35,
+        Cell:({row,...props})=>{
+          return(
+            <IconMenu
+              iconButtonElement={<MoreVertIcon/>}
+              anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+              targetOrigin={{horizontal: 'right', vertical: 'top'}}
+            >
+              <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(row._original.id)}/>
+              <MenuItem primaryText="Add Notes" onClick={()=>controlAddNotes('AddNotes',{transaction:row._original,isOpen:true})}/>
+            </IconMenu>
+          )
+        }
+      }
     ]
     const isLoading = loading && budget.length===0;
     return (
       <div>
+        <AddNotes/>
         <Row>
           <Col xs={12}>
             <Row>
@@ -163,7 +190,9 @@ const mapStateToProps = state => ({
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({
-    toggleAddBudget:toggleAddBudget
+    toggleAddBudget:toggleAddBudget,
+    ignoreTransaction:ignoreTransaction,
+    controlAddNotes:controlAddNotes,
   },dispatch)
 }
 

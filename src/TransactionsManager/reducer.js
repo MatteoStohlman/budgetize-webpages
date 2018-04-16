@@ -1,11 +1,24 @@
 const initialState = {
   requesting: false,
   successful: false,
-  data:[]
+  data:[],
+  components:{
+    AddNotes:{
+      isOpen:false,
+      value:null,
+      isLoading:false,
+      transaction:null
+    }
+  }
 }
 
 const reducer = function loginReducer (state = initialState, action) {
   switch (action.type) {
+    case 'UPDATE_TRANSACTION_COMPONENT':
+      var retVal={...state}
+      var newValues = Object.assign(retVal.components[action.componentName],action.values)
+      retVal.components[action.componentName]=newValues
+      return retVal
     case 'UPDATE_TRANS_REQ':
       return {
         ...state,
@@ -32,8 +45,10 @@ const reducer = function loginReducer (state = initialState, action) {
         requesting:false,
         successful:true,
       }
-      retVal.data.uncategorizedTransactions = retVal.data.uncategorizedTransactions.filter((trans)=>(trans.id!=transId))
-      retVal.data.latestTransactions = retVal.data.latestTransactions.filter((trans)=>(trans.id!=transId))
+      if(retVal.data.uncategorizedTransactions)
+        retVal.data.uncategorizedTransactions = retVal.data.uncategorizedTransactions.filter((trans)=>(trans.id!=transId))
+      if(retVal.data.latestTransactions)
+        retVal.data.latestTransactions = retVal.data.latestTransactions.filter((trans)=>(trans.id!=transId))
       return retVal
     default:
       return state

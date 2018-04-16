@@ -3,7 +3,7 @@
   import { call, put, takeLatest } from 'redux-saga/effects'
 
 //APIs
-  import {getTransactions,ignoreTransaction} from 'api/transactions'
+  import {getTransactions,ignoreTransaction,addNotes} from 'api/transactions'
 
 function* updateUncattedTransFlow(action){
   try {
@@ -25,6 +25,22 @@ function* ignoreTransactionFlow(action){
     const response = yield call(ignoreTransaction,transactionId)
     if(response.status){
       yield put({type:'IGNORE_TRANS_SUC',data:response.payload,transId:transactionId})
+      yield put({type:'REMOVE_TRANS_FROM_BUDGET',transactionId:transactionId})
+    }
+
+  } catch (error) {
+    console.log(error)
+
+  }
+}
+
+function* addNotesFlow(action){
+  try {
+    const {transId,notes} = action
+    const response = yield call(addNotes,transId,notes)
+    if(response.status){
+      //yield put({type:'ADD_TRANSACTION_NOTES_SUC',data:response.payload,transId:transactionId})
+      yield put({type:'UPDATE_TRANSACTION_COMPONENT',componentName:'AddNotes',values:{isOpen:false,isLoad:false,value:null,transaction:null}})
     }
 
   } catch (error) {
@@ -36,6 +52,7 @@ function* ignoreTransactionFlow(action){
 function* templateWatcher () {
   yield takeLatest('UPDATE_TRANS_REQ', updateUncattedTransFlow)
   yield takeLatest('IGNORE_TRANS_REQ', ignoreTransactionFlow)
+  yield takeLatest('ADD_TRANSACTION_NOTES_REQ', addNotesFlow)
 }
 
 export default templateWatcher

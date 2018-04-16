@@ -31,6 +31,20 @@ const reducer = function loginReducer (state = initialState, action) {
       retVal.addBudget.isOpen=toggleTo
       retVal.addBudget.initialValues=action.initialValues
       return retVal
+    case 'REMOVE_TRANS_FROM_BUDGET':
+      var transId = action.transactionId
+      var retVal={...state}
+      var updatedBudget = []
+      retVal.data.map((budgetLine)=>{
+        var newBudgetLine = budgetLine
+        var newBudgetLineTransactions = budgetLine.transactions.filter((trans)=>
+          trans.id!=transId
+        )
+        newBudgetLine.transactions=newBudgetLineTransactions
+        updatedBudget.push(newBudgetLine)
+      })
+      retVal.data=updatedBudget
+      return retVal
     default:
       return state
   }
