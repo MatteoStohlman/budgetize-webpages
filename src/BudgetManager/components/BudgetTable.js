@@ -94,13 +94,29 @@ const BudgetTable = ({
       },
       {
         Header: 'Date',
-        id: 'date',
-        accessor: row=>moment(row.date).format(DATE.formats.pretty)
+        id:'transactionDate',
+        accessor: ({date})=>(
+          moment(date).isValid()?
+            moment(date).unix():
+            null
+        ),
+        Cell:({row})=>(
+          moment(row._original.date).isValid()?
+            moment(row._original.date).format(DATE.formats.pretty):
+            null
+        )
       },
       {
-        Header: 'value',
+        Header: '$ Value',
         id: 'value',
-        accessor: row=>numeral(row.value).format('$0,0.00')
+        accessor:({value})=>Number(value),
+        Cell: ({row})=>{
+          if(row._original.value>0)
+            return( <span style={{color:'green'}}>{numeral(row._original.value).format('$0.00')}</span> )
+          else
+            return( <span style={{color:'red'}}>{numeral(row._original.value).format('$0.00')}</span> )
+
+        }
       },
       {
         Header: 'Notes',
@@ -170,6 +186,12 @@ const BudgetTable = ({
                   </div>
                 )
               }}
+              defaultSorted={[
+                {
+                  id: "transactionDate",
+                  desc: true
+                }
+              ]}
             />
           </Col>
         </Row>

@@ -96,5 +96,5 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  withState('page','updatePage','BudgetManager'),
+  withState('page','updatePage','TransactionsManager'),
 )(Home)

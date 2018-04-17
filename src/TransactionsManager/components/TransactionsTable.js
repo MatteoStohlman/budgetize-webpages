@@ -22,6 +22,7 @@ import {DATE} from 'CONSTANTS'
   import {controlComponent} from 'TransactionsManager/actions'
 //COMPONENTS//
   import AddNotes from 'TransactionsManager/components/AddNotes'
+  import SplitTransaction from 'TransactionsManager/components/SplitTransaction'
 
 const TransactionsTable = ({
     transactions,updateTransactions,
@@ -41,11 +42,12 @@ const TransactionsTable = ({
       {
         Header: '$ Value',
         id: 'value',
-        accessor: ({value})=>{
-          if(value>0)
-            return( <span style={{color:'green'}}>{numeral(value).format('$0.00')}</span> )
+        accessor:({value})=>Number(value),
+        Cell: ({row})=>{
+          if(row._original.value>0)
+            return( <span style={{color:'green'}}>{numeral(row._original.value).format('$0.00')}</span> )
           else
-            return( <span style={{color:'red'}}>{numeral(value).format('$0.00')}</span> )
+            return( <span style={{color:'red'}}>{numeral(row._original.value).format('$0.00')}</span> )
 
         }
       },
@@ -63,9 +65,14 @@ const TransactionsTable = ({
         id:'transactionDate',
         accessor: ({transaction_date})=>(
           moment(transaction_date).isValid()?
-            moment(transaction_date).format(DATE.formats.pretty):
+            moment(transaction_date).unix():
             null
         ),
+        Cell:({row})=>(
+          moment(row._original.transaction_date).isValid()?
+            moment(row._original.transaction_date).format(DATE.formats.pretty):
+            null
+        )
       },
       {
         Header: 'Notes',
@@ -82,6 +89,7 @@ const TransactionsTable = ({
             >
               <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[row._original]})}/>
               <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(row._original.id)}/>
+              <MenuItem primaryText="Split" onClick={()=>controlComponent('SplitTransaction',{isOpen:true,targetTransaction:row._original,valueTotal:row._original.value})}/>
               <MenuItem primaryText="Add Notes" onClick={()=>controlComponent('AddNotes',{isOpen:true,transaction:row._original,value:row._original.notes})}/>
             </IconMenu>
           )
@@ -108,6 +116,7 @@ const TransactionsTable = ({
     return(
       <div>
         <AddNotes/>
+        <SplitTransaction/>
         <Row>
           <Col xs={12}>
             <div style={{width:'40%',display:'inline-block'}}>
@@ -138,9 +147,12 @@ const TransactionsTable = ({
               columns={columns}
               className="-striped -highlight"
               defaultPageSize={20}
-              style={{
-                //height: "600px" // This will force the table body to overflow and scroll, since there is not enough room
-              }}
+              defaultSorted={[
+                {
+                  id: "transactionDate",
+                  desc: true
+                }
+              ]}
             />
           </Col>
         </Row>

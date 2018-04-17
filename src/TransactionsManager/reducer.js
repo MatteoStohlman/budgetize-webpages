@@ -1,3 +1,8 @@
+const componentState=(isOpen=false,value=null,isLoading=false)=>({
+  isOpen:isOpen,
+  value:value,
+  isLoading:isLoading,
+})
 const initialState = {
   requesting: false,
   successful: false,
@@ -8,6 +13,15 @@ const initialState = {
       value:null,
       isLoading:false,
       transaction:null
+    },
+    SplitTransaction:{
+      ...componentState(),
+      targetTransaction:null,
+      splitTransaction:{
+        name:null,
+        value:null,
+      },
+      valueTotal:0
     }
   }
 }
@@ -15,7 +29,7 @@ const initialState = {
 const reducer = function loginReducer (state = initialState, action) {
   switch (action.type) {
     case 'UPDATE_TRANSACTION_COMPONENT':
-      var retVal={...state}
+      var retVal=JSON.parse(JSON.stringify({...state}))
       var newValues = Object.assign(retVal.components[action.componentName],action.values)
       retVal.components[action.componentName]=newValues
       return retVal
