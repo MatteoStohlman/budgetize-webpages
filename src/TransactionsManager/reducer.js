@@ -20,6 +20,7 @@ const initialState = {
       splitTransaction:{
         name:null,
         value:null,
+        category:null,
       },
       valueTotal:0
     }
@@ -30,7 +31,10 @@ const reducer = function loginReducer (state = initialState, action) {
   switch (action.type) {
     case 'UPDATE_TRANSACTION_COMPONENT':
       var retVal=JSON.parse(JSON.stringify({...state}))
-      var newValues = Object.assign(retVal.components[action.componentName],action.values)
+      if(action.values=='DEFAULT')
+        var newValues = initialState.components[action.componentName]
+      else
+        var newValues = Object.assign(retVal.components[action.componentName],action.values)
       retVal.components[action.componentName]=newValues
       return retVal
     case 'UPDATE_TRANS_REQ':
