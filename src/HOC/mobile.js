@@ -1,5 +1,5 @@
 import React from 'react';
-const Mobile=()=>(WrappedChild)=>{
+const Mobile=()=>(WrappedChild,...props)=>{
   function isMobileDevice() {
       return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
   };

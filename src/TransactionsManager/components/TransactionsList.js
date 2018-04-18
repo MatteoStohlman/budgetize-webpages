@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {withState,compose} from 'recompose';
+import {withState,compose,withProps} from 'recompose';
 import PropTypes from 'prop-types';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,13 +9,14 @@ import moment from 'moment'
 import {DATE} from 'CONSTANTS'
 //COMPONENTS//
   import MenuItem from 'material-ui/MenuItem';
-  import {grey400,darkBlack,red500,orange500} from 'material-ui/styles/colors';
+  import {grey400,darkBlack,green500,orange500} from 'material-ui/styles/colors';
   import IconButton from 'material-ui/IconButton';
   import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
   import IconMenu from 'material-ui/IconMenu';
   import Slider from "react-slick";
   import {Row,Col} from 'react-bootstrap'
   import Paper from 'material-ui/Paper';
+  import Loading from 'HOC/Loading'
 
   const sliderSettings = {
       dots: false,
@@ -27,7 +28,7 @@ import {DATE} from 'CONSTANTS'
 
 const TransactionsList = ({
   transactions,filter,loading,
-  children
+  children,...props
 })=> {
   const Menu = ()=>(
     <IconMenu
@@ -63,9 +64,10 @@ const TransactionsList = ({
     textAlign:'center',
     width:'100%',
     height:60,
-    padding:15,
+    padding:20,
 
   }
+  console.log(props)
   var filteredTransactions = transactions[filter?filter:'uncategorizedTransactions']
   return (
     <div>
@@ -99,8 +101,8 @@ const TransactionsList = ({
               </div>
             </Paper>
             <Paper>
-              <div style={{...actionSlide,backgroundColor:red500,textAlign:'left'}}>
-                <h4 style={{margin:0,fontVariant:'small-caps',fontWeight:'bold'}}>Delete Transaction</h4>
+              <div style={{...actionSlide,backgroundColor:green500,textAlign:'left'}}>
+                <h4 style={{margin:0,fontVariant:'small-caps',fontWeight:'bold'}}>Categorize Transaction</h4>
               </div>
             </Paper>
           </Slider>
@@ -125,5 +127,7 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
+  Loading,
+  withProps(props=>{return{loading:props.loading}})
   //withState('activeTab','updateActiveTab','search')
 )(TransactionsList)
