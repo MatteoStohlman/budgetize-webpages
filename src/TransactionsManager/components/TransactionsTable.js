@@ -32,6 +32,7 @@ const TransactionsTable = ({
     categories,filter,
     controlComponent,
     ignoreTransaction,
+    isMobile,
     ...props
   }) => {
     const columns = [

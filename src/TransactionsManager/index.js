@@ -4,35 +4,52 @@ import {bindActionCreators} from 'redux';
 import {withState,compose,lifecycle} from 'recompose';
 import PropTypes from 'prop-types';
 //COMPONENTS//
-import TransactionsTable from './components/TransactionsTable'
-import Toggle from 'material-ui/Toggle';
+  import TransactionsTable from './components/TransactionsTable'
+  import Toggle from 'material-ui/Toggle';
+  import Mobile from 'HOC/mobile'
+  import TransactionsList from 'TransactionsManager/components/TransactionsList'
 //ACTIONS//
-import {updateTransactions} from './actions'
-import {updateCategories} from 'CategoryManager/actions'
+  import {updateTransactions} from './actions'
+  import {updateCategories} from 'CategoryManager/actions'
 const TransactionsManager =
   ({
     transactions,updateTransactions,
     categories,updateCategories,
     toggleText,updateToggleText,
+    isMobile,
     ...props
   }) => {
     function getToggleText(){
 
     }
     return (
-      <TransactionsTable
-        transactions={transactions.data}
-        loading={transactions.requesting}
-        refreshCallback={()=>{updateTransactions(),updateCategories()}}
-        categories={categories}
-        filter={toggleText=='Only Uncategorized'?'uncategorizedTransactions':'latestTransactions'}
-      >
-        <Toggle
-          label={toggleText}
-          defaultToggled={true}
-          onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
-        />
-    </TransactionsTable>
+      isMobile?
+        <TransactionsList
+          transactions={transactions.data}
+          loading={transactions.requesting}
+          refreshCallback={()=>{updateTransactions(),updateCategories()}}
+          categories={categories}
+        >
+          <Toggle
+            label={toggleText}
+            defaultToggled={true}
+            onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
+          />
+        </TransactionsList>
+        :
+        <TransactionsTable
+          transactions={transactions.data}
+          loading={transactions.requesting}
+          refreshCallback={()=>{updateTransactions(),updateCategories()}}
+          categories={categories}
+          filter={toggleText=='Only Uncategorized'?'uncategorizedTransactions':'latestTransactions'}
+        >
+          <Toggle
+            label={toggleText}
+            defaultToggled={true}
+            onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
+          />
+        </TransactionsTable>
     )
 }
 
@@ -51,6 +68,7 @@ function matchDispatchToProps(dispatch){
 }
 
 export default compose(
+  Mobile(),
   connect(mapStateToProps, matchDispatchToProps),
   withState('toggleText','updateToggleText','Only Uncategorized'),
   lifecycle({
