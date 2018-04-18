@@ -81,6 +81,22 @@ const SplitTransaction = ({
               updateSliderPercentage(Math.round((value/valueTotal)*100))
             }}
           />
+          <SelectField
+              floatingLabelText="Category"
+              value={category?category.id:null}
+              onChange={(event,index,value)=>updateSplitTransaction('category',categories[index])}
+              disabled={isLoading}
+            >
+            {
+              categories.length?
+                categories.map((category)=>{
+                  return(
+                    <MenuItem value={category.id} primaryText={category.name}/>
+                  )
+                }):
+                null
+            }
+          </SelectField>
         </Col>
         <Col md={6} xs={12} style={{colStyle}}>
           <TextField

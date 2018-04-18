@@ -4,7 +4,7 @@ const Mobile=()=>(WrappedChild,...props)=>{
       return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
   };
   return (props) => (
-      <WrappedChild {...props} isMobile={true}/>
+      <WrappedChild {...props} isMobile={isMobileDevice()}/>
   );
 }
 export default Mobile
