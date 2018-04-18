@@ -29,11 +29,13 @@ const TransactionsManager =
           loading={transactions.requesting}
           refreshCallback={()=>{updateTransactions(),updateCategories()}}
           categories={categories}
+          filter={toggleText=='Only Uncategorized'?'uncategorizedTransactions':'latestTransactions'}
         >
           <Toggle
             label={toggleText}
             defaultToggled={true}
             onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
+            style={{paddingLeft:40,paddingRight:40}}
           />
         </TransactionsList>
         :
