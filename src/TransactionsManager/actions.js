@@ -3,10 +3,11 @@ export function updateTransactions(){
 		type: 'UPDATE_TRANS_REQ',
 	}
 }
-export function ignoreTransaction(transactionId){
+export function ignoreTransaction(transactionId,callback){
 	return{
 		type:'IGNORE_TRANS_REQ',
-		transactionId
+		transactionId,
+		callback:()=>callback()
 	}
 }
 export function controlComponent(componentName,values){
@@ -21,5 +22,11 @@ export function addTransactionNotes(transId,notes){
 		type:'ADD_TRANSACTION_NOTES_REQ',
 		transId,
 		notes,
+	}
+}
+export function splitTransaction(payload){
+	return{
+		type:'SPLIT_TRANSACTION_REQ',
+		payload
 	}
 }

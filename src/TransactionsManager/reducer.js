@@ -16,13 +16,14 @@ const initialState = {
     },
     SplitTransaction:{
       ...componentState(),
-      targetTransaction:null,
+      targetTransaction:{},
       splitTransaction:{
         name:null,
         value:null,
         category:null,
       },
-      valueTotal:0
+      valueTotal:0,
+      sliderPercentage:0,
     }
   }
 }

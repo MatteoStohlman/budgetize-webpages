@@ -23,7 +23,7 @@ const TransactionsManager =
 
     }
     return (
-      isMobile?
+      true?
         <TransactionsList
           transactions={transactions.data}
           loading={transactions.requesting}

@@ -17,6 +17,12 @@ import {DATE} from 'CONSTANTS'
   import {Row,Col} from 'react-bootstrap'
   import Paper from 'material-ui/Paper';
   import Loading from 'HOC/Loading'
+  import AddMapping from 'MappingManager/components/AddMapping'
+  import Dialog from 'material-ui/Dialog';
+  import FlatButton from 'material-ui/FlatButton';
+  import CircularProgress from 'material-ui/CircularProgress';
+//ACTIONS//
+  import {ignoreTransaction} from 'TransactionsManager/actions'
 
   const sliderSettings = {
       dots: false,
@@ -27,7 +33,16 @@ import {DATE} from 'CONSTANTS'
     };
 
 const TransactionsList = ({
-  transactions,filter,loading,
+  //PARENT//
+  transactions,filter,loading,refreshCallback,
+  //STATE//
+  showCreateMapping,updateShowCreateMapping,
+  updateActiveSlider,activeSlider,
+  showConfirmation,updateShowConfirmation,
+  activeTransactionId,updateActiveTransactionId,
+  //ACTIONS//
+  ignoreTransaction,
+  //OTHER//
   children,...props
 })=> {
   const Menu = ()=>(
@@ -67,16 +82,84 @@ const TransactionsList = ({
     padding:20,
 
   }
-  console.log(props)
+  function genInitialMappingValues(){
+    if(showCreateMapping.active){
+      if(showCreateMapping.data[0].plaidTags){
+        let plaidTags = JSON.parse(showCreateMapping.data[0].plaidTags)
+        let lastPlaidTag = plaidTags[plaidTags.length-1]
+        return {matchType:'plaidTag',keyword:lastPlaidTag}
+      }
+    }
+    return false
+  }
   var filteredTransactions = transactions[filter?filter:'uncategorizedTransactions']
+  const actions = [
+    <FlatButton
+      label="No"
+      primary={true}
+      onClick={()=>{
+        updateShowConfirmation(false)
+        this[activeSlider].slickGoTo(1)
+      }}
+    />,
+    <FlatButton
+      label="Yes"
+      primary={true}
+      keyboardFocused={true}
+      onClick={()=>{
+        ignoreTransaction(activeTransactionId,()=>{
+          updateShowConfirmation(false)
+          this[activeSlider].slickGoTo(1,true)
+          updateActiveTransactionId(false)
+        })
+
+      }}
+    />,
+  ];
+  console.log(loading?'is loading':'not loading')
   return (
     <div>
+      <AddMapping
+        isOpen={showCreateMapping.active}
+        guessTransactions={showCreateMapping.data}
+        toggle={()=>updateShowCreateMapping({active:false})}
+        withButton={false}
+        refreshData={refreshCallback}
+        cancelCallback={()=>this[showCreateMapping.callbackArg].slickGoTo(1)}
+        initialValues={genInitialMappingValues()}
+      />
+      <Dialog
+        title="Are you sure?"
+        actions={actions}
+        modal={false}
+        open={showConfirmation}
+        onRequestClose={updateShowConfirmation}
+      >
+        {loading &&
+          <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
+        }
+      </Dialog>
       <h3 style={{marginLeft:10}}>Transactions</h3>
       {children}
-      {filteredTransactions && filteredTransactions.map((trans)=>{
+      {filteredTransactions && filteredTransactions.map((trans,index)=>{
         return(
           <Slider {...sliderSettings}
-            afterChange={(e)=>console.log(e)}
+            ref={slider => (this['slider'+index] = slider)}
+            afterChange={(sliderIndex)=>{
+              console.log(sliderIndex)
+              let sliderName='slider'+index
+              console.log(sliderName)
+              switch (sliderIndex) {
+                case 2:
+                  updateShowCreateMapping({active:true,data:[{plaidTags:trans.plaidTags}],callbackArg:sliderName})
+                  break;
+                case 0:
+                  updateActiveTransactionId(trans.id)
+                  updateActiveSlider(sliderName)
+                  updateShowConfirmation(true)
+                  break;
+              }
+            }}
             initialSlide={1}
           >
             <Paper>
@@ -121,12 +204,16 @@ const mapStateToProps = state => ({
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({
-
+    ignoreTransaction:ignoreTransaction
   },dispatch)
 }
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
+  withState('showCreateMapping','updateShowCreateMapping',{active:false}),//Shape:{active:bool,data:{transactionEntity}}
+  withState('activeSlider','updateActiveSlider',false),
+  withState('showConfirmation','updateShowConfirmation',false),
+  withState('activeTransactionId','updateActiveTransactionId',false),
   Loading,
   withProps(props=>{return{loading:props.loading}})
   //withState('activeTab','updateActiveTab','search')

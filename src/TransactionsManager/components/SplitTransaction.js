@@ -13,14 +13,17 @@ import PropTypes from 'prop-types';
   import SelectField from 'material-ui/SelectField';
   import MenuItem from 'material-ui/MenuItem';
 //ACTIONS//
-  import {controlComponent} from 'TransactionsManager/actions'
+  import {controlComponent,splitTransaction} from 'TransactionsManager/actions'
   import {updateCategories} from 'CategoryManager/actions'
 
 const SplitTransaction = ({
-  isOpen,isLoading,valueTotal,category,categories,
+  isOpen,isLoading,valueTotal,categories,
+  splitCategory,targetCategory,
   targetTransaction,splitTransaction,
+  splitTheTransaction,
   controlComponent,
-  sliderPercentage,updateSliderPercentage,
+  sliderPercentage,
+  showError,updateShowError,
 })=> {
   function updateTargetTransaction(key,value){
     var newTargetTrans = JSON.parse(JSON.stringify(targetTransaction))
@@ -32,17 +35,34 @@ const SplitTransaction = ({
     newSplitTrans[key]=value
     controlComponent('SplitTransaction',{splitTransaction:newSplitTrans})
   }
+  function updateSliderPercentage(value){
+    controlComponent('SplitTransaction',{sliderPercentage:value})
+  }
   const actions = [
     <FlatButton
       label="Cancel"
       primary={true}
-      onClick={()=>controlComponent('SplitTransaction','DEFAULT')}
+      onClick={()=>{
+        controlComponent('SplitTransaction','DEFAULT')
+        updateShowError(false)
+      }}
     />,
     <FlatButton
       label='Save'
       primary={true}
       onClick={()=>{
-        console.log('Save Split');
+        //Validate//
+        var {name,value,category} = splitTransaction
+        if(!name || !value || !category){
+          updateShowError(true)
+          return
+        }
+        targetTransaction.category = targetTransaction.category.id
+        splitTransaction.category = splitTransaction.category.id
+        splitTheTransaction({
+          targetTransaction:targetTransaction,
+          splitTransaction:splitTransaction
+        })
       }}
       disabled={isLoading}
     />
@@ -52,7 +72,7 @@ const SplitTransaction = ({
     padding:20,
     overflow:'hidden'
   }
-  if(!splitTransaction.name)
+  if(!splitTransaction.name && targetTransaction.name)
     updateSplitTransaction('name',"SPLIT FROM "+targetTransaction.name)
   return (
     <Dialog
@@ -65,6 +85,7 @@ const SplitTransaction = ({
         <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
       }
       <Row>
+        {showError && <p style={{color:'red'}}>Required fields missing</p>}
         <Col md={6} xs={12} style={{colStyle}}>
           <TextField
             value={targetTransaction.name}
@@ -83,8 +104,8 @@ const SplitTransaction = ({
           />
           <SelectField
               floatingLabelText="Category"
-              value={category?category.id:null}
-              onChange={(event,index,value)=>updateSplitTransaction('category',categories[index])}
+              value={targetCategory?targetCategory.id:null}
+              onChange={(event,index,value)=>updateTargetTransaction('category',categories[index])}
               disabled={isLoading}
             >
             {
@@ -119,7 +140,7 @@ const SplitTransaction = ({
           />
           <SelectField
               floatingLabelText="Category"
-              value={category?category.id:null}
+              value={splitCategory?splitCategory.id:null}
               onChange={(event,index,value)=>updateSplitTransaction('category',categories[index])}
               disabled={isLoading}
             >
@@ -143,12 +164,11 @@ const SplitTransaction = ({
               <Slider
                 fullWidth={true}
                 step={0.05}
-                value={sliderPercentage}
+                value={sliderPercentage/100}
                 onChange={(e,value)=>{
                   var roundedPercentage = Number(value).toFixed(2)
                   var targetValue = Number(roundedPercentage*valueTotal).toFixed(2)
                   var splitValue = Number(valueTotal-targetValue).toFixed(2)
-                  console.log(targetValue,valueTotal,splitValue)
                   updateSliderPercentage(Math.round(roundedPercentage*100))
                   updateTargetTransaction('value',targetValue)
                   updateSplitTransaction('value',splitValue)
@@ -176,19 +196,22 @@ const mapStateToProps = state => ({
   splitTransaction:state.transactions.components.SplitTransaction.splitTransaction,
   isLoading:state.transactions.components.SplitTransaction.isLoading,
   valueTotal:state.transactions.components.SplitTransaction.valueTotal,
-  category:state.transactions.components.SplitTransaction.splitTransaction.category,
+  splitCategory:state.transactions.components.SplitTransaction.splitTransaction.category,
+  targetCategory:state.transactions.components.SplitTransaction.targetTransaction.category,
   categories:state.categories.data,
+  sliderPercentage:state.transactions.components.SplitTransaction.sliderPercentage,
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({
     controlComponent:controlComponent,
     updateCategories:updateCategories,
+    splitTheTransaction:splitTransaction,
   },dispatch)
 }
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  withState('sliderPercentage','updateSliderPercentage',0),
+  withState('showError','updateShowError',false),
   lifecycle({
     componentDidMount(){
       this.props.updateCategories()

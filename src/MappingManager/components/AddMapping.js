@@ -35,6 +35,7 @@ const AddMapping =
     withButton=true,guessTransactions,
     showAutocomplete,updateShowAutocomplete,
     autocompleteArray,updateAutocompleteArray,
+    cancelCallback,
     refreshData,...props
   }) => {
     function handleSubmit(){
@@ -78,7 +79,10 @@ const AddMapping =
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={toggle}
+        onClick={()=>{
+          toggle();
+          cancelCallback?cancelCallback():null;
+        }}
       />,
       <FlatButton
         label="Save Mapping"

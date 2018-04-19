@@ -14,13 +14,13 @@ import {toast} from 'react-toastify'
 import moment from 'moment'
 import numeral from 'numeral'
 import IconButton from 'material-ui/IconButton';
-import AddMapping from 'MappingManager/components/AddMapping'
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {DATE} from 'CONSTANTS'
 //ACTIONS//
   import {ignoreTransaction} from '../actions'
   import {controlComponent} from 'TransactionsManager/actions'
 //COMPONENTS//
+  import AddMapping from 'MappingManager/components/AddMapping'
   import AddNotes from 'TransactionsManager/components/AddNotes'
   import SplitTransaction from 'TransactionsManager/components/SplitTransaction'
 
@@ -90,7 +90,12 @@ const TransactionsTable = ({
             >
               <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[row._original]})}/>
               <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(row._original.id)}/>
-              <MenuItem primaryText="Split" onClick={()=>controlComponent('SplitTransaction',{isOpen:true,targetTransaction:row._original,valueTotal:row._original.value})}/>
+              <MenuItem primaryText="Split" onClick={()=>controlComponent('SplitTransaction',{
+                  isOpen:true,
+                  targetTransaction:{...row._original,category:{id:row._original.category_id,name:row._original.categoryName}},
+                  valueTotal:row._original.value
+                })}
+              />
               <MenuItem primaryText="Add Notes" onClick={()=>controlComponent('AddNotes',{isOpen:true,transaction:row._original,value:row._original.notes})}/>
             </IconMenu>
           )
