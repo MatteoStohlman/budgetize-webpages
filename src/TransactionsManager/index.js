@@ -19,11 +19,12 @@ const TransactionsManager =
     isMobile,
     ...props
   }) => {
+    var isMobile=true
     function getToggleText(){
 
     }
     return (
-      true?
+      isMobile?
         <TransactionsList
           transactions={transactions.data}
           loading={transactions.requesting}

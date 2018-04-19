@@ -15,8 +15,10 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Dialog from 'material-ui/Dialog';
 import AddCategory from 'CategoryManager/components/AddCategory'
+import '../style.css'
 //MATERIAL COMPONENTS//
-import AutoComplete from 'material-ui/AutoComplete';
+  import AutoComplete from 'material-ui/AutoComplete';
+  import Mobile from 'HOC/mobile'
 //ACTIONS//
 import {addMapping} from 'api/mapping'
 import {getUserCategories} from 'api/categories'
@@ -35,9 +37,10 @@ const AddMapping =
     withButton=true,guessTransactions,
     showAutocomplete,updateShowAutocomplete,
     autocompleteArray,updateAutocompleteArray,
-    cancelCallback,
+    cancelCallback,isMobile,
     refreshData,...props
   }) => {
+    var isMobile=true
     function handleSubmit(){
       updateIsSubmitting(true,()=>{
         var finalKeyword = keyword?keyword:initialValues.keyword?initialValues.keyword:false
@@ -150,6 +153,14 @@ const AddMapping =
     }
     if(!autocompleteArray && initialValues && initialValues.matchType)
       genAutocompleteArray(initialValues.matchType)
+    const isMobileStyle_style={
+      padding:0,
+      paddingTop:0,
+    }
+    const isMobileStyle_content={
+      transform: 'translate(0px, 10px)',
+      width:'95%',
+    }
     return (
         <div style={style} className={className}>
           {showAddCategory &&
@@ -166,6 +177,9 @@ const AddMapping =
             actions={actions}
             modal={true}
             open={isOpen}
+            className={isMobile?'mobile-dialog-root':''}
+            style={isMobile?{...isMobileStyle_style}:{}}
+            contentStyle={isMobile?{...isMobileStyle_content}:{}}
           >
             {isSubmitting &&
               <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
@@ -231,6 +245,7 @@ function matchDispatchToProps(dispatch){
 // }
 
 export default compose(
+  Mobile(),
   connect(mapStateToProps,matchDispatchToProps),
   withState('keyword','updateKeyword',false),
   withState('category','updateCategory',false),

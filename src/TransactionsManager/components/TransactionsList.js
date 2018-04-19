@@ -40,6 +40,7 @@ const TransactionsList = ({
   updateActiveSlider,activeSlider,
   showConfirmation,updateShowConfirmation,
   activeTransactionId,updateActiveTransactionId,
+  openMenu,updateOpenMenu,
   //ACTIONS//
   ignoreTransaction,
   //OTHER//
@@ -116,7 +117,6 @@ const TransactionsList = ({
       }}
     />,
   ];
-  console.log(loading?'is loading':'not loading')
   return (
     <div>
       <AddMapping
@@ -170,7 +170,14 @@ const TransactionsList = ({
             <Paper>
               <div style={transactionWrapper}>
                 <IconMenu
-                  iconButtonElement={<IconButton><MoreVertIcon/></IconButton>}
+                  iconButtonElement={
+                    <IconButton
+                      onTouchTap={(e)=>{updateOpenMenu(index)}}
+                    >
+                      <MoreVertIcon/>
+                    </IconButton>}
+                  open={openMenu===index}
+                  onRequestChange={(value)=>updateOpenMenu(value)}
                   style={{position:'absolute',top:10,right:10}}
                   anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                   targetOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -214,6 +221,7 @@ export default compose(
   withState('activeSlider','updateActiveSlider',false),
   withState('showConfirmation','updateShowConfirmation',false),
   withState('activeTransactionId','updateActiveTransactionId',false),
+  withState('openMenu','updateOpenMenu',false),
   Loading,
   withProps(props=>{return{loading:props.loading}})
   //withState('activeTab','updateActiveTab','search')
