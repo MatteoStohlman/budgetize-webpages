@@ -13,12 +13,12 @@ import {toast} from 'react-toastify'
 import CircularProgress from 'material-ui/CircularProgress';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import Dialog from 'material-ui/Dialog';
 import AddCategory from 'CategoryManager/components/AddCategory'
 import '../style.css'
-//MATERIAL COMPONENTS//
+//COMPONENTS//
   import AutoComplete from 'material-ui/AutoComplete';
   import Mobile from 'HOC/mobile'
+  import FlexDialog from 'components/FlexDialog'
 //ACTIONS//
 import {addMapping} from 'api/mapping'
 import {getUserCategories} from 'api/categories'
@@ -37,10 +37,9 @@ const AddMapping =
     withButton=true,guessTransactions,
     showAutocomplete,updateShowAutocomplete,
     autocompleteArray,updateAutocompleteArray,
-    cancelCallback,isMobile,
+    cancelCallback,
     refreshData,...props
   }) => {
-    var isMobile=true
     function handleSubmit(){
       updateIsSubmitting(true,()=>{
         var finalKeyword = keyword?keyword:initialValues.keyword?initialValues.keyword:false
@@ -153,14 +152,6 @@ const AddMapping =
     }
     if(!autocompleteArray && initialValues && initialValues.matchType)
       genAutocompleteArray(initialValues.matchType)
-    const isMobileStyle_style={
-      padding:0,
-      paddingTop:0,
-    }
-    const isMobileStyle_content={
-      transform: 'translate(0px, 10px)',
-      width:'95%',
-    }
     return (
         <div style={style} className={className}>
           {showAddCategory &&
@@ -172,14 +163,11 @@ const AddMapping =
             />
           }
           {withButton && <RaisedButton label='Add Mapping' onClick={toggle} primary={true} style={{marginRight:10,marginLeft:10}}/>}
-          <Dialog
+          <FlexDialog
             title="Add A Mapping"
             actions={actions}
             modal={true}
             open={isOpen}
-            className={isMobile?'mobile-dialog-root':''}
-            style={isMobile?{...isMobileStyle_style}:{}}
-            contentStyle={isMobile?{...isMobileStyle_content}:{}}
           >
             {isSubmitting &&
               <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
@@ -227,7 +215,7 @@ const AddMapping =
                 null
             }
             </SelectField>
-          </Dialog>
+          </FlexDialog>
         </div>
     )
 }

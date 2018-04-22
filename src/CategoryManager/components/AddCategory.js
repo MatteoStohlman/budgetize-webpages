@@ -11,7 +11,7 @@ import Dialog from 'material-ui/Dialog';
 import {toast} from 'react-toastify'
 import CircularProgress from 'material-ui/CircularProgress';
 import {addCategory} from 'api/categories'
-
+import FlexDialog from 'components/FlexDialog'
 
 const AddCategory =
   ({
@@ -53,7 +53,7 @@ const AddCategory =
     return (
         <div style={style} className={className}>
           {withButton && <RaisedButton label='Add Category' onClick={toggle} primary={true} style={{marginRight:10,marginLeft:10}}/>}
-          <Dialog
+          <FlexDialog
             title="Add A Category"
             actions={actions}
             modal={true}
@@ -69,7 +69,7 @@ const AddCategory =
               onChange={(event,value)=>updateCategoryName(value)}
               disabled={isSubmitting}
             />
-          </Dialog>
+        </FlexDialog>
         </div>
     )
 }

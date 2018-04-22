@@ -23,6 +23,8 @@ import {ignoreTransaction} from 'TransactionsManager/actions'
   import {controlComponent as controlAddNotes} from 'TransactionsManager/actions'
 //COMPONENTS//
   import AddNotes from 'TransactionsManager/components/AddNotes'
+  import TransactionsMenu from 'TransactionsManager/components/TransactionsMenu'
+  import SplitTransaction from 'TransactionsManager/components/SplitTransaction'
 
 
 const BudgetTable = ({
@@ -30,7 +32,7 @@ const BudgetTable = ({
   callback,categories,
   snackText,snackToast,
   toggleAddBudget,ignoreTransaction,
-  controlAddNotes,
+  controlAddNotes,transactionComponents,
   ...props
   }) => {
     function handleDelete(id,name){
@@ -126,14 +128,7 @@ const BudgetTable = ({
         width:35,
         Cell:({row,...props})=>{
           return(
-            <IconMenu
-              iconButtonElement={<MoreVertIcon/>}
-              anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-              targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            >
-              <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(row._original.id)}/>
-              <MenuItem primaryText="Add Notes" onClick={()=>controlAddNotes('AddNotes',{transaction:row._original,isOpen:true})}/>
-            </IconMenu>
+              <TransactionsMenu transaction={row._original} refreshCallback={callback}/>
           )
         }
       }
@@ -141,7 +136,8 @@ const BudgetTable = ({
     const isLoading = loading && budget.length===0;
     return (
       <div>
-        <AddNotes/>
+        {transactionComponents.SplitTransaction.isOpen && <SplitTransaction/>}
+        {transactionComponents.AddNotes.isOpen && <AddNotes/>}
         <Row>
           <Col xs={12}>
             <Row>
@@ -209,6 +205,7 @@ const BudgetTable = ({
 //   label:PropTypes.string.isRequired
 // }
 const mapStateToProps = state => ({
+  transactionComponents:state.transactions.components,
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({

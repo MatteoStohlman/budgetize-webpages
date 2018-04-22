@@ -4,9 +4,6 @@ import {bindActionCreators} from 'redux';
 import TextField from 'material-ui/TextField';
 import {withState,compose} from 'recompose';
 import PropTypes from 'prop-types';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import {Row,Col} from 'react-bootstrap'
 import ReactTable from 'react-table'
 import Snackbar from 'material-ui/Snackbar';
@@ -20,9 +17,7 @@ import {DATE} from 'CONSTANTS'
   import {ignoreTransaction} from '../actions'
   import {controlComponent} from 'TransactionsManager/actions'
 //COMPONENTS//
-  import AddMapping from 'MappingManager/components/AddMapping'
-  import AddNotes from 'TransactionsManager/components/AddNotes'
-  import SplitTransaction from 'TransactionsManager/components/SplitTransaction'
+  import TransactionsMenu from 'TransactionsManager/components/TransactionsMenu'
 
 const TransactionsTable = ({
     transactions,updateTransactions,
@@ -83,21 +78,7 @@ const TransactionsTable = ({
         width:35,
         Cell:({row})=>{
           return(
-            <IconMenu
-              iconButtonElement={<MoreVertIcon/>}
-              anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-              targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            >
-              <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[row._original]})}/>
-              <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(row._original.id)}/>
-              <MenuItem primaryText="Split" onClick={()=>controlComponent('SplitTransaction',{
-                  isOpen:true,
-                  targetTransaction:{...row._original,category:{id:row._original.category_id,name:row._original.categoryName}},
-                  valueTotal:row._original.value
-                })}
-              />
-              <MenuItem primaryText="Add Notes" onClick={()=>controlComponent('AddNotes',{isOpen:true,transaction:row._original,value:row._original.notes})}/>
-            </IconMenu>
+            <TransactionsMenu transaction={row._original} refreshCallback={refreshCallback}/>
           )
         }
       }
@@ -109,20 +90,9 @@ const TransactionsTable = ({
       }
       columns.splice(columns.length-2,0,categoryColumn)
     }
-    function genInitialMappingValues(){
-      if(showCreateMapping.active){
-        if(showCreateMapping.data[0].plaidTags){
-          let plaidTags = JSON.parse(showCreateMapping.data[0].plaidTags)
-          let lastPlaidTag = plaidTags[plaidTags.length-1]
-          return {matchType:'plaidTag',keyword:lastPlaidTag}
-        }
-      }
-      return false
-    }
+
     return(
       <div>
-        <AddNotes/>
-        <SplitTransaction/>
         <Row>
           <Col xs={12}>
             <div style={{width:'40%',display:'inline-block'}}>
@@ -168,14 +138,6 @@ const TransactionsTable = ({
           autoHideDuration={5000}
           onRequestClose={()=>snackToast(false)}
         />
-        <AddMapping
-          isOpen={showCreateMapping.active}
-          guessTransactions={showCreateMapping.data}
-          toggle={()=>updateShowCreateMapping({active:false})}
-          withButton={false}
-          refreshData={refreshCallback}
-          initialValues={genInitialMappingValues()}
-        />
       </div>
     )
 }
@@ -195,6 +157,5 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  withState('snackText','snackToast',false),
-  withState('showCreateMapping','updateShowCreateMapping',{active:false})//Shape:{active:bool,data:{transactionEntity}}
+  withState('snackText','snackToast',false)
 )(TransactionsTable)

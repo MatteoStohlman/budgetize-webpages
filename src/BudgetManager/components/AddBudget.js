@@ -23,6 +23,8 @@ import moment from 'moment'
 import {addBudgetLine} from 'api/budget'
 //ACTIONS//
   import {toggleAddBudget} from 'BudgetManager/actions'
+//COMPONENTS//
+  import FlexDialog from 'components/FlexDialog'
 
 
 const AddBudget =
@@ -112,7 +114,7 @@ const AddBudget =
             />
           }
           {withButton && <RaisedButton label='Add Budget Line' onClick={()=>toggleAddBudget(true)} primary={true} style={{marginLeft:10}}/>}
-          <Dialog
+          <FlexDialog
             title="Add A Budget Line"
             actions={actions}
             modal={true}
@@ -155,7 +157,7 @@ const AddBudget =
               onChange={(event,value)=>updateValue(value)}
               disabled={isSubmitting}
             />
-          </Dialog>
+          </FlexDialog>
         </div>
     )
 }

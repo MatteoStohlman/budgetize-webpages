@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
   import {controlComponent,addTransactionNotes} from 'TransactionsManager/actions'
 //COMPONENTS//
   import FlatButton from 'material-ui/FlatButton';
-  import Dialog from 'material-ui/Dialog';
+  import FlexDialog from 'components/FlexDialog'
   import CircularProgress from 'material-ui/CircularProgress';
   import TextField from 'material-ui/TextField';
 
@@ -30,7 +30,7 @@ const AddNotes = ({isOpen,value,isLoading,transaction,update,addTransactionNotes
       />
     ];
     return (
-      <Dialog
+      <FlexDialog
         title="Add Transaction Notes"
         actions={actions}
         modal={true}
@@ -50,7 +50,7 @@ const AddNotes = ({isOpen,value,isLoading,transaction,update,addTransactionNotes
           onChange={(e)=>update('AddNotes',{value:e.target.value})}
         />
 
-      </Dialog>
+    </FlexDialog>
     )
 }
 

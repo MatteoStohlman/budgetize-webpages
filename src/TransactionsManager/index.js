@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
   import Toggle from 'material-ui/Toggle';
   import Mobile from 'HOC/mobile'
   import TransactionsList from 'TransactionsManager/components/TransactionsList'
+  import AddNotes from 'TransactionsManager/components/AddNotes'
+  import SplitTransaction from 'TransactionsManager/components/SplitTransaction'
 //ACTIONS//
   import {updateTransactions} from './actions'
   import {updateCategories} from 'CategoryManager/actions'
@@ -16,43 +18,49 @@ const TransactionsManager =
     transactions,updateTransactions,
     categories,updateCategories,
     toggleText,updateToggleText,
-    isMobile,
+    isMobile,components,
     ...props
   }) => {
-    var isMobile=true
+    //var isMobile=false
     function getToggleText(){
 
     }
     return (
-      isMobile?
-        <TransactionsList
-          transactions={transactions.data}
-          loading={transactions.requesting}
-          refreshCallback={()=>{updateTransactions(),updateCategories()}}
-          categories={categories}
-          filter={toggleText=='Only Uncategorized'?'uncategorizedTransactions':'latestTransactions'}
-        >
-          <Toggle
-            label={toggleText}
-            defaultToggled={true}
-            onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
-            style={{paddingLeft:40,paddingRight:40}}
-          />
-        </TransactionsList>
-        :
-        <TransactionsTable
-          transactions={transactions.data}
-          loading={transactions.requesting}
-          refreshCallback={()=>{updateTransactions(),updateCategories()}}
-          categories={categories}
-          filter={toggleText=='Only Uncategorized'?'uncategorizedTransactions':'latestTransactions'}
-        >
-          <Toggle
-            label={toggleText}
-            defaultToggled={true}
-            onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
-          />
-        </TransactionsTable>
+      <div>
+        {
+          isMobile?
+            <TransactionsList
+              transactions={transactions.data}
+              loading={transactions.requesting}
+              refreshCallback={()=>{updateTransactions(),updateCategories()}}
+              categories={categories}
+              filter={toggleText=='Only Uncategorized'?'uncategorizedTransactions':'latestTransactions'}
+            >
+              <Toggle
+                label={toggleText}
+                defaultToggled={true}
+                onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
+                style={{paddingLeft:40,paddingRight:40}}
+              />
+            </TransactionsList>
+            :
+            <TransactionsTable
+              transactions={transactions.data}
+              loading={transactions.requesting}
+              refreshCallback={()=>{updateTransactions(),updateCategories()}}
+              categories={categories}
+              filter={toggleText=='Only Uncategorized'?'uncategorizedTransactions':'latestTransactions'}
+            >
+              <Toggle
+                label={toggleText}
+                defaultToggled={true}
+                onToggle={(event,state)=>updateToggleText(state?'Only Uncategorized':'Last 5 Days')}
+              />
+            </TransactionsTable>
+        }
+        {components.AddNotes.isOpen && <AddNotes/>}
+        {components.SplitTransaction.isOpen && <SplitTransaction/>}
+      </div>
     )
 }
 
@@ -62,6 +70,7 @@ const TransactionsManager =
 const mapStateToProps = state => ({
   transactions:state.transactions,
   categories:state.categories,
+  components: state.transactions.components,
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({

@@ -19,6 +19,7 @@ import {DATE} from 'CONSTANTS'
   import Loading from 'HOC/Loading'
   import AddMapping from 'MappingManager/components/AddMapping'
   import Dialog from 'material-ui/Dialog';
+  import ConfirmationDialog from 'components/ConfirmationDialog'
   import FlatButton from 'material-ui/FlatButton';
   import CircularProgress from 'material-ui/CircularProgress';
 //ACTIONS//
@@ -94,29 +95,6 @@ const TransactionsList = ({
     return false
   }
   var filteredTransactions = transactions[filter?filter:'uncategorizedTransactions']
-  const actions = [
-    <FlatButton
-      label="No"
-      primary={true}
-      onClick={()=>{
-        updateShowConfirmation(false)
-        this[activeSlider].slickGoTo(1)
-      }}
-    />,
-    <FlatButton
-      label="Yes"
-      primary={true}
-      keyboardFocused={true}
-      onClick={()=>{
-        ignoreTransaction(activeTransactionId,()=>{
-          updateShowConfirmation(false)
-          this[activeSlider].slickGoTo(1,true)
-          updateActiveTransactionId(false)
-        })
-
-      }}
-    />,
-  ];
   return (
     <div>
       <AddMapping
@@ -128,17 +106,21 @@ const TransactionsList = ({
         cancelCallback={()=>this[showCreateMapping.callbackArg].slickGoTo(1)}
         initialValues={genInitialMappingValues()}
       />
-      <Dialog
-        title="Are you sure?"
-        actions={actions}
-        modal={false}
-        open={showConfirmation}
-        onRequestClose={updateShowConfirmation}
-      >
-        {loading &&
-          <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
-        }
-      </Dialog>
+      <ConfirmationDialog
+        isOpen={showConfirmation}
+        close={updateShowConfirmation}
+        negativeCallback={()=>{
+          updateShowConfirmation(false)
+          this[activeSlider].slickGoTo(1)
+        }}
+        positiveCallback={()=>{
+          ignoreTransaction(activeTransactionId,()=>{
+            updateShowConfirmation(false)
+            this[activeSlider].slickGoTo(1,true)
+            updateActiveTransactionId(false)
+          })
+        }}
+      />
       <h3 style={{marginLeft:10}}>Transactions</h3>
       {children}
       {filteredTransactions && filteredTransactions.map((trans,index)=>{

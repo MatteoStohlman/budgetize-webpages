@@ -5,7 +5,7 @@ import {withState,compose,lifecycle} from 'recompose';
 import PropTypes from 'prop-types';
 //COMPONENTS//
   import FlatButton from 'material-ui/FlatButton';
-  import Dialog from 'material-ui/Dialog';
+  import FlexDialog from 'components/FlexDialog'
   import CircularProgress from 'material-ui/CircularProgress';
   import TextField from 'material-ui/TextField';
   import Slider from 'material-ui/Slider';
@@ -75,7 +75,7 @@ const SplitTransaction = ({
   if(!splitTransaction.name && targetTransaction.name)
     updateSplitTransaction('name',"SPLIT FROM "+targetTransaction.name)
   return (
-    <Dialog
+    <FlexDialog
       title="Split Transaction"
       actions={actions}
       modal={true}
@@ -182,7 +182,7 @@ const SplitTransaction = ({
         </Col>
       </Row>
 
-    </Dialog>
+    </FlexDialog>
   )
 }
 
