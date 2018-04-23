@@ -3,8 +3,20 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {withState,compose} from 'recompose';
 import PropTypes from 'prop-types';
+//COMPONENTS//
 
-const COMPONENT_NAME = ({label,...props})=> {
+//ACTIONS//
+
+const COMPONENT_NAME = ({
+  //REDUX
+
+  //STATE
+
+  //PROPS
+
+  //OTHER
+  ...props
+})=> {
     return (
       <TextField
         hintText={label}

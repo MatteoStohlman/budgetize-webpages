@@ -13,7 +13,15 @@ import PropTypes from 'prop-types';
 //ACTIONS//
   import {ignoreTransaction} from '../actions'
 
-const TransactionsMenu = ({transaction,refreshCallback,controlComponent,ignoreTransaction,showCreateMapping,updateShowCreateMapping})=> {
+const TransactionsMenu = ({
+  //PROPS//
+  transaction,refreshCallback,
+  //REDUX//
+  controlComponent,ignoreTransaction,
+  //STATE
+  showCreateMapping,updateShowCreateMapping,
+  //OTHER
+  ...props})=> {
     function genInitialMappingValues(){
       if(showCreateMapping.active){
         if(showCreateMapping.data[0].plaidTags){
@@ -38,6 +46,7 @@ const TransactionsMenu = ({transaction,refreshCallback,controlComponent,ignoreTr
           iconButtonElement={<MoreVertIcon/>}
           anchorOrigin={{horizontal: 'left', vertical: 'top'}}
           targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          {...props}
         >
           <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[transaction]})}/>
           <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(transaction.id,refreshCallback)}/>

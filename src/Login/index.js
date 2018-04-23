@@ -4,13 +4,14 @@
     import {connect} from 'react-redux';
     import {bindActionCreators} from 'redux';
     import {withState,compose} from 'recompose';
+  //HOC//
 
   //STYLE
 
   //NODE_MODULES
 
   //ACTIONS
-    import {login} from './actions'
+    import {login,updateLoginComponent} from './actions'
 
   //COMPONENTS
     import Dialog from 'material-ui/Dialog';
@@ -18,13 +19,15 @@
     import RaisedButton from 'material-ui/RaisedButton';
     import TextField from 'material-ui/TextField';
     import CircularProgress from 'material-ui/CircularProgress';
+    import FlexDialog from 'components/FlexDialog'
+    import CreateAccount from './CreateAccount'
 
-const Login = ({email,password,login,updateEmail,updatePassword,routeTo,page,isLoggingIn}) => {
+const Login = ({email,password,login,updateEmail,updatePassword,routeTo,page,isLoggingIn,updateLoginComponent}) => {
     const actions = [
       <FlatButton
-        label="Cancel"
+        label="Create Account"
         primary={true}
-        onClick={()=>console.log('Not Sure What To Do About That')}
+        onClick={()=>updateLoginComponent('CreateAccount',{isOpen:true})}
       />,
       <FlatButton
         label="Login"
@@ -34,34 +37,38 @@ const Login = ({email,password,login,updateEmail,updatePassword,routeTo,page,isL
       />,
     ];
     return (
-      <Dialog
-        title="Login To Get Started"
-        actions={actions}
-        modal={true}
-        open={true}
-      >
-        {isLoggingIn && <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>}
-        <TextField
-          hintText="user@gmail.com"
-          floatingLabelText='Email'
-          label='email'
-          fullWidth={true}
-          onChange={(e,value)=>updateEmail(value)}
-        />
-        <TextField
-          hintText="password123"
-          floatingLabelText="Password"
-          type="password"
-          fullWidth={true}
-          onChange={(e,value)=>updatePassword(value)}
-          onKeyPress={(ev) => {
-            if (ev.key === 'Enter') {
-              login(email,password)
-              ev.preventDefault();
-            }
-          }}
-        />
-      </Dialog>
+      <div>
+        <FlexDialog
+          title="Login To Get Started"
+          actions={actions}
+          modal={true}
+          open={true}
+          overlayStyle={{backgroundColor:'rgb(255,255,255,1)'}}
+        >
+          {isLoggingIn && <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>}
+          <TextField
+            hintText="user@gmail.com"
+            floatingLabelText='Email'
+            label='email'
+            fullWidth={true}
+            onChange={(e,value)=>updateEmail(value)}
+          />
+          <TextField
+            hintText="password123"
+            floatingLabelText="Password"
+            type="password"
+            fullWidth={true}
+            onChange={(e,value)=>updatePassword(value)}
+            onKeyPress={(ev) => {
+              if (ev.key === 'Enter') {
+                login(email,password)
+                ev.preventDefault();
+              }
+            }}
+          />
+        </FlexDialog>
+        <CreateAccount/>
+      </div>
     )
 }
 
@@ -73,7 +80,8 @@ function mapStateToProps(state){
 
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({
-    login:login
+    login:login,
+    updateLoginComponent:updateLoginComponent,
   },dispatch)
 }
 

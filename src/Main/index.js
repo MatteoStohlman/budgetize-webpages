@@ -13,7 +13,6 @@ import './style.css'
   import BudgetManager from 'BudgetManager'
   import Dashboard from 'Dashboard'
   import Login from 'Login'
-  import PlaidLink from 'Plaid/plaidLink'
   import NotificationsBadge from 'Notifications/components/NotificationsBadge'
 
   import AppBar from 'material-ui/AppBar';
@@ -75,8 +74,7 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
         iconElementRight={<NavigationMenu isLoggedIn={user.data.isLoggedIn}/>}
       />
     {switchPage()}
-      {!user.data.isLoggedIn && <Login routeTo={updatePage} page={page}/>}
-      <PlaidLink/>
+    {!user.data.isLoggedIn && <Login routeTo={updatePage} page={page}/>}
     </MuiThemeProvider>
   )
 }
@@ -96,5 +94,5 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  withState('page','updatePage','TransactionsManager'),
+  withState('page','updatePage','Home'),
 )(Home)

@@ -37,7 +37,7 @@ const AddMapping =
     withButton=true,guessTransactions,
     showAutocomplete,updateShowAutocomplete,
     autocompleteArray,updateAutocompleteArray,
-    cancelCallback,
+    cancelCallback,isMobile,
     refreshData,...props
   }) => {
     function handleSubmit(){
@@ -179,14 +179,14 @@ const AddMapping =
               onChange={(event,index,value)=>handleMatchTypeSelect(value)}
               disabled={isSubmitting}
             >
-              <MenuItem value={'id'} primaryText="Transaction Only" secondaryText='use this to map an individual transaction'/>
-              <MenuItem value={'plaidTag'} primaryText="Plaid Tag" secondaryText='use this for the smartest type of matching'/>
-              <MenuItem value={'name'} primaryText="Transaction Name" secondaryText='use this for a more customized match'/>
+              <MenuItem value={'id'} primaryText="Transaction Only" secondaryText={!isMobile?'use this to map an individual transaction':''}/>
+              <MenuItem value={'plaidTag'} primaryText="Smart Categories" secondaryText={!isMobile?'use this for the smartest type of matching':''}/>
+              <MenuItem value={'name'} primaryText="Transaction Name" secondaryText={!isMobile?'use this for a more customized match':''}/>
             </SelectField>
             {/*autocompleteValue() && ['plaidTag','name'].indexOf(getMatchType())>=0*/}
             {showAutocomplete &&
               <AutoComplete
-                hintText="Giant, Sunoco, Landlord"
+                hintText="..."
                 floatingLabelText="Keyword"
                 fullWidth={true}
                 dataSource={autocompleteArray?autocompleteArray:[]}

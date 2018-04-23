@@ -13,7 +13,7 @@ class PlaidLink extends Component{
     this.state={
       disabledButton: false,
       linkLoaded: false,
-      institution: "ins_109511",
+      //institution: "ins_109511",
       //token:props.plaidLink.token,
       selectAccount: false,
       buttonText: 'Open Link',

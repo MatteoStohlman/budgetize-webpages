@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import numeral from 'numeral'
 //COMPONENTS//
   import Dialog from 'material-ui/Dialog';
+  import FlexDialog from 'components/FlexDialog'
   import CircularProgress from 'material-ui/CircularProgress';
   import FlatButton from 'material-ui/FlatButton';
 
@@ -32,14 +33,14 @@ const ConfirmationDialog = ({
     />,
   ];
   return(
-    <Dialog
+    <FlexDialog
       title={message}
       actions={actions}
       modal={false}
       open={isOpen}
       onRequestClose={close}
     >
-    </Dialog>
+    </FlexDialog>
   )
 }
 

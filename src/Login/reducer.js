@@ -5,6 +5,12 @@ const initialState = {
   data:{
     isLoggedIn:false,
     user:{}
+  },
+  components:{
+    CreateAccount:{
+      isOpen:false,
+      isLoading:false,
+    }
   }
 }
 
@@ -33,6 +39,17 @@ const reducer = (state = initialState, action)=>{
       retVal.requesting=false
       retVal.successful=false
       localStorage.removeItem('token')
+      return retVal
+    case 'UPDATE_LOGIN_COMPONENT':
+      console.log(action)
+      console.log(action.values=='TEST')
+      var retVal=JSON.parse(JSON.stringify({...state}))
+      console.log(retVal)
+      if(action.values=='DEFAULT')
+        var newValues = initialState.components[action.componentName]
+      else
+        var newValues = Object.assign(retVal.components[action.componentName],action.values)
+      retVal.components[action.componentName]=newValues
       return retVal
     default:
       try{

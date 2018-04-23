@@ -11,6 +11,7 @@ import {List, ListItem} from 'material-ui/List';
 import FA from 'react-fontawesome'
 import CircularProgress from 'material-ui/CircularProgress';
 import DollarValue from 'components/DollarValue'
+import PlaidLink from 'Plaid/plaidLink'
 
 const Accounts = ({openPlaidLink,bankAccounts,isLoading,...props}) => {
     function positiveOrNegative(value,accountType=false){
@@ -22,6 +23,7 @@ const Accounts = ({openPlaidLink,bankAccounts,isLoading,...props}) => {
     }
     return (
       <div style={{height:'100%'}}>
+        <PlaidLink/>
         <div style={{height:'15%',width:'100%',overflow:'hidden',marginTop:0,marginBottom:0}}>
           <h2 style={{marginLeft:10}}>Accounts</h2>
           {!isLoading && <RaisedButton label="Add Account" secondary={true} onClick={()=>openPlaidLink()} style={{position:'absolute',right:5,top:5}}/>}

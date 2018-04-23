@@ -11,3 +11,12 @@ export function logout(){
 		type: 'LOGOUT',
 	}
 }
+
+export function updateLoginComponent(componentName,values){
+	console.log('running action');
+	return{
+		type: 'UPDATE_LOGIN_COMPONENT',
+		componentName,
+		values,
+	}
+}

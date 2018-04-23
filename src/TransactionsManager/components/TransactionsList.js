@@ -22,6 +22,8 @@ import {DATE} from 'CONSTANTS'
   import ConfirmationDialog from 'components/ConfirmationDialog'
   import FlatButton from 'material-ui/FlatButton';
   import CircularProgress from 'material-ui/CircularProgress';
+  import TransactionsMenu from 'TransactionsManager/components/TransactionsMenu'
+  import DollarValue from 'components/DollarValue'
 //ACTIONS//
   import {ignoreTransaction} from 'TransactionsManager/actions'
 
@@ -83,6 +85,9 @@ const TransactionsList = ({
     height:60,
     padding:20,
 
+  }
+  const valueStyle={
+    float:'right'
   }
   function genInitialMappingValues(){
     if(showCreateMapping.active){
@@ -151,25 +156,16 @@ const TransactionsList = ({
             </Paper>
             <Paper>
               <div style={transactionWrapper}>
-                <IconMenu
-                  iconButtonElement={
-                    <IconButton
-                      onTouchTap={(e)=>{updateOpenMenu(index)}}
-                    >
-                      <MoreVertIcon/>
-                    </IconButton>}
-                  open={openMenu===index}
-                  onRequestChange={(value)=>updateOpenMenu(value)}
+                <TransactionsMenu
+                  transaction={trans}
+                  refreshCallback={refreshCallback}
                   style={{position:'absolute',top:10,right:10}}
                   anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                   targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                >
-                  <MenuItem primaryText="Refresh" />
-                  <MenuItem primaryText="Send feedback" />
-                  <MenuItem primaryText="Settings" />
-                </IconMenu>
+                />
                 <span style={title}>{trans.name}</span>
                 <span style={subtitle}>{moment(trans.transaction_date).format(DATE.formats.pretty)}</span>
+                <span style={valueStyle}><DollarValue value={trans.value} type='fancy'/></span>
               </div>
             </Paper>
             <Paper>
