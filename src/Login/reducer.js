@@ -41,10 +41,7 @@ const reducer = (state = initialState, action)=>{
       localStorage.removeItem('token')
       return retVal
     case 'UPDATE_LOGIN_COMPONENT':
-      console.log(action)
-      console.log(action.values=='TEST')
       var retVal=JSON.parse(JSON.stringify({...state}))
-      console.log(retVal)
       if(action.values=='DEFAULT')
         var newValues = initialState.components[action.componentName]
       else

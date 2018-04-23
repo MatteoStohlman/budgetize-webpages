@@ -5,6 +5,16 @@ const initialState = {
   addBudget:{
     isOpen:false,
     initialValues:false
+  },
+  components:{
+    CopyBudget:{
+      isOpen:false,
+      isLoading:false,
+      fromMonth:null,
+      fromYear:null,
+      toMonths:[],
+      toYears:[],
+    }
   }
 }
 

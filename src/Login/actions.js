@@ -13,10 +13,20 @@ export function logout(){
 }
 
 export function updateLoginComponent(componentName,values){
-	console.log('running action');
 	return{
 		type: 'UPDATE_LOGIN_COMPONENT',
 		componentName,
 		values,
+	}
+}
+
+export function createAccount(firstName,lastName,email,password,callback){
+	return{
+		type:'CREATE_ACCOUNT_REQ',
+		firstName,
+		lastName,
+		email,
+		password,
+		callback:()=>callback()
 	}
 }

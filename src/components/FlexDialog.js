@@ -8,7 +8,9 @@ import './style.css'
   import Mobile from 'HOC/mobile'
 //COMPONENTS//
   import Dialog from 'material-ui/Dialog';
-const FlexDialog = ({isMobile,children,...props})=> {
+  import CircularProgress from 'material-ui/CircularProgress';
+
+const FlexDialog = ({isMobile,children,isLoading,...props})=> {
     const isMobileStyle_content={
       transform: 'translate(0px, 10px)',
       width:'95%',
@@ -19,7 +21,11 @@ const FlexDialog = ({isMobile,children,...props})=> {
         {...props}
         contentStyle={isMobile?{...props.contentStyle,...isMobileStyle_content}:{...props.contentStyle}}
         className={isMobile?props.className+' mobile-dialog-root':props.className}
+        modal={props.modal?props.modal:true}
       >
+        {isLoading &&
+          <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
+        }
         {children}
       </Dialog>
     )

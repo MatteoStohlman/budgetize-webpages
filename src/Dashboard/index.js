@@ -16,7 +16,6 @@ import AddBudget from 'BudgetManager/components/AddBudget'
   import {updateNotifications} from 'Notifications/actions'
 
 const Home = ({page,updatePage,routeTo,updateNotifications,categories}) => {
-    JSON.parse(localStorage.getItem('token')).value
     var defaultLayout = [
       {i: 'AddAccount', x: 6, y: 0, w: 7, h: 12},
       {i: 'Notifications', x: 0, y: 0, w: 5, h: 15},

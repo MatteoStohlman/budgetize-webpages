@@ -9,12 +9,17 @@ import PropTypes from 'prop-types';
   import TextField from 'material-ui/TextField';
   import FlatButton from 'material-ui/FlatButton';
 //ACTIONS//
-  import {updateLoginComponent} from './actions'
+  import {updateLoginComponent,createAccount} from './actions'
 
 
 const CreateAccount = ({
   //REDUX
-    updateLoginComponent,isOpen,
+    updateLoginComponent,isOpen,createAccount,isLoading,
+  //STATE
+    email,updateEmail,
+    password,updatePassword,
+    firstName,updateFirstName,
+    lastName,updateLastName,
   //OTHER
     ...props
 })=> {
@@ -25,10 +30,19 @@ const CreateAccount = ({
         onClick={()=>updateLoginComponent('CreateAccount',{isOpen:false})}
       />,
       <FlatButton
-        label="Save"
+        label="Sign Up!"
         primary={true}
         //disabled={!email || !password}
-        onClick={()=>console.log('Creating')}
+        onClick={()=>{
+          updateLoginComponent("CreateAccount",{isLoading:true})
+          createAccount(
+            firstName,
+            lastName,
+            email,
+            password,
+            ()=>updateLoginComponent("CreateAccount",{isLoading:false,isOpen:false})
+          )
+        }}
       />,
     ];
     return (
@@ -37,23 +51,28 @@ const CreateAccount = ({
         actions={actions}
         modal={true}
         open={isOpen}
+        isLoading={isLoading}
       >
         <TextField
           hintText="Bob"
           floatingLabelText="First Name"
+          onChange={(e,value)=>updateFirstName(value)}
         />
         <TextField
           hintText="Saget"
           floatingLabelText="Last Name"
+          onChange={(e,value)=>updateLastName(value)}
         />
         <TextField
           hintText="test@email.com"
           floatingLabelText="Email"
+          onChange={(e,value)=>updateEmail(value)}
         />
         <TextField
           type='password'
           hintText="password123"
           floatingLabelText="Password"
+          onChange={(e,value)=>updatePassword(value)}
         />
       </FlexDialog>
     )
@@ -64,15 +83,20 @@ CreateAccount.propTypes={
 }
 
 const mapStateToProps = state => ({
-  isOpen:state.user.components.CreateAccount.isOpen
+  isOpen:state.user.components.CreateAccount.isOpen,
+  isLoading:state.user.components.CreateAccount.isLoading
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({
-    updateLoginComponent:updateLoginComponent
+    updateLoginComponent:updateLoginComponent,
+    createAccount:createAccount,
   },dispatch)
 }
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  //withState('activeTab','updateActiveTab','search')
+  withState('firstName','updateFirstName',''),
+  withState('lastName','updateLastName',''),
+  withState('email','updateEmail',''),
+  withState('password','updatePassword',''),
 )(CreateAccount)

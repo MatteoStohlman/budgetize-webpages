@@ -55,3 +55,21 @@ export function addBudgetLine(month,year,value,categoryId,userId,budgetId){
             return response.json();
           });
 }
+export function copyBudget(payload,userId){
+  var requestUrl='https://script.google.com/macros/s/AKfycbzyO8Lg1ciQYnhSV47k8aakSXAKSLC01v_yCZtV1FVYdjphKkM/exec?'
+  requestUrl+='action=copyBudget'
+  requestUrl+='&userId='+(userId?userId:JSON.parse(localStorage.getItem('token')).userId)
+  requestUrl+='&authorization='+JSON.parse(localStorage.getItem('token')).value
+  return fetch(requestUrl,{
+                            method: 'POST',
+                            body:JSON.stringify(payload)
+                          })
+          .then(response => {
+            if (!response.ok) {
+              const error = new Error(response.statusText);
+              error.response = response;
+              throw error;
+            }
+            return response.json();
+          });
+}

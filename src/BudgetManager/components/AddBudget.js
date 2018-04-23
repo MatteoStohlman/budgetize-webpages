@@ -117,7 +117,6 @@ const AddBudget =
           <FlexDialog
             title="Add A Budget Line"
             actions={actions}
-            modal={true}
             open={isOpen}
           >
             {isSubmitting &&
