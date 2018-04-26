@@ -33,7 +33,6 @@ const Notifications = ({notifications,isLoading,updateNotifications,routeTo,...p
         return 'unknown'
       }
     }
-    console.log(routeTo)
     return (
       <div>
         <h2 style={{marginLeft:5}}>Notifications</h2>

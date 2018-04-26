@@ -1,4 +1,5 @@
 import moment from 'moment'
+import InitializeOneSignal from 'OneSignal/initialize'
 const initialState = {
   requesting: false,
   successful: false,
@@ -10,6 +11,9 @@ const initialState = {
     CreateAccount:{
       isOpen:false,
       isLoading:false,
+    },
+    OneSignal:{
+      initialized:false
     }
   }
 }
@@ -23,6 +27,7 @@ const reducer = (state = initialState, action)=>{
         successful:false
       }
     case 'LOGIN_SUC':
+      InitializeOneSignal()
       var retVal={
         ...state,
         requesting:false,
@@ -31,6 +36,7 @@ const reducer = (state = initialState, action)=>{
       retVal.data.isLoggedIn=true
       retVal.data.user.firstName=action.data.first_name
       retVal.data.user.lastName=action.data.last_name
+      retVal.components.OneSignal.initialized=true
       return retVal
     case 'LOGOUT':
       var retVal = {...state}
@@ -50,10 +56,13 @@ const reducer = (state = initialState, action)=>{
       return retVal
     default:
       try{
+        if(!state.components.OneSignal.initialized)
+          InitializeOneSignal()
         var loginExpiration = moment(JSON.parse(localStorage.getItem('token')).expires_at,'YYYY-MM-DD HH:mm')
         var isLoginActive = moment().isBefore(loginExpiration)
         var retVal={...state}
         retVal.data.isLoggedIn=isLoginActive
+        retVal.components.OneSignal.initialized=true
       }catch(e){
         var retVal={...state}
         retVal.data.isLoggedIn=false

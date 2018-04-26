@@ -12,7 +12,7 @@ function* loginFlow(action){
     const response = yield call(login,email,password)
     if(response.status){
       yield put({type:'LOGIN_SUC',data:response.payload})
-      window.location.reload()
+      //window.location.reload()
       localStorage.setItem('token', JSON.stringify(response.payload.token))
     }
 
