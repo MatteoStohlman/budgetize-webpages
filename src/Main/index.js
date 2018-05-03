@@ -24,6 +24,8 @@ import './style.css'
   import SvgIcon from 'material-ui/SvgIcon';
   import FA from 'react-fontawesome'
 
+  import OinkLogo from './logo'
+
 //ACTIONS//
   import {logout} from 'Login/actions'
 
@@ -62,6 +64,8 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
         return <BudgetManager routeTo={updatePage}/>
       case 'Login':
         return <Login routeTo={updatePage}/>
+      case 'test':
+        return <OinkLogo/>
       default:
         return(<h1>Default. Selected: {page}</h1>)
     }
@@ -69,8 +73,8 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
   return (
     <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <AppBar
-        title="Budgetize"
-        iconElementLeft={<SvgIcon style={{marginTop:11}}><FA name='credit-card' style={{color:'white'}} size='2x'/></SvgIcon>}
+        title=''
+        iconElementLeft={<OinkLogo width={80}/>}
         iconElementRight={<NavigationMenu isLoggedIn={user.data.isLoggedIn}/>}
       />
     {switchPage()}
@@ -94,5 +98,5 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  withState('page','updatePage','Home'),
+  withState('page','updatePage','BudgetManager'),
 )(Home)

@@ -100,6 +100,7 @@ const AddMapping =
       if(guessTransactions){
         if(matchType=='name'){
           guessTransactions.map((trans)=>{
+            console.log(trans);
             trans.name.split(" ").map((word)=>{
               returnValue.push(word)
             })
@@ -120,16 +121,17 @@ const AddMapping =
       }
     }
     function handleMatchTypeSelect(matchType){
-      //console.log('updating match type to: '+matchType);
       updateMatchType(matchType)
-      var autocompleteArray = genAutocompleteArray(matchType)
-      updateKeyword(autocompleteArray[0])
       if(matchType=='name' || matchType=='plaidTag'){
-        //console.log('updatingShowAutoComplete');
+        var autocompleteArray = genAutocompleteArray(matchType)
+        updateKeyword(autocompleteArray[0])
         updateShowAutocomplete(true)
       }
-      if(matchType=='id' && guessTransactions){
-        updateKeyword(guessTransactions[0].transaction_id)
+      if(matchType=='id'){
+        if(guessTransactions)
+          updateKeyword(guessTransactions[0].transaction_id)
+        else
+         throw 'Cannot find transaction id'
         updateShowAutocomplete(false)
       }
     }

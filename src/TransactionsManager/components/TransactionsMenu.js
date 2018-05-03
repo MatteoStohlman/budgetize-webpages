@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 
 const TransactionsMenu = ({
   //PROPS//
-  transaction,refreshCallback,
+  transaction,refreshCallback,options=false,excludeOptions=false,
   //REDUX//
   controlComponent,ignoreTransaction,
   //STATE
@@ -31,6 +31,18 @@ const TransactionsMenu = ({
         }
       }
       return false
+    }
+    function shouldShowOption(optionName){
+      let shouldShow=true
+      if(options){
+        if(options.indexOf(optionName) < 0)
+          shouldShow=false
+      }
+      if(excludeOptions){
+        if(excludeOptions.indexOf(optionName) >= 0)
+          shouldShow=false
+      }
+      return shouldShow
     }
     return (
       <div>
@@ -48,15 +60,15 @@ const TransactionsMenu = ({
           targetOrigin={{horizontal: 'right', vertical: 'top'}}
           {...props}
         >
-          <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[transaction]})}/>
-          <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(transaction.id,refreshCallback)}/>
-          <MenuItem primaryText="Split" onClick={()=>controlComponent('SplitTransaction',{
+          {shouldShowOption('createMapping') && <MenuItem primaryText="Create Mapping" onClick={()=>updateShowCreateMapping({active:true,data:[transaction]})}/>}
+          {shouldShowOption('ignore') && <MenuItem primaryText="Ignore Transaction" onClick={()=>ignoreTransaction(transaction.id,refreshCallback)}/>}
+          {shouldShowOption('split') && <MenuItem primaryText="Split" onClick={()=>controlComponent('SplitTransaction',{
               isOpen:true,
               targetTransaction:{...transaction,category:{id:transaction.category_id,name:transaction.categoryName}},
               valueTotal:transaction.value
             })}
-          />
-        <MenuItem primaryText="Add Notes" onClick={()=>controlComponent('AddNotes',{isOpen:true,transaction:transaction,value:transaction.notes})}/>
+          />}
+          {shouldShowOption('notes') && <MenuItem primaryText="Add Notes" onClick={()=>controlComponent('AddNotes',{isOpen:true,transaction:transaction,value:transaction.notes})}/>}
         </IconMenu>
       </div>
     )

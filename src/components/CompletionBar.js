@@ -1,14 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {withState,compose,withProps} from 'recompose';
+import {withState,compose} from 'recompose';
 import PropTypes from 'prop-types';
 //COMPONENTS//
 
 //ACTIONS//
-
-//HOC//
-  import Loading from 'HOC/Loading'
 
 const COMPONENT_NAME = ({
   //REDUX
@@ -28,7 +25,7 @@ const COMPONENT_NAME = ({
     )
 }
 
-COMPONENT_NAME.propTypes={
+TextInput.propTypes={
   label:PropTypes.string.isRequired
 }
 
@@ -43,7 +40,5 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
-  Loading,
-  withProps(props=>{return{loading:false}}),
   //withState('activeTab','updateActiveTab','search')
 )(COMPONENT_NAME)

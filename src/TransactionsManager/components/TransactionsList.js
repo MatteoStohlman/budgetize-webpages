@@ -138,7 +138,7 @@ const TransactionsList = ({
               console.log(sliderName)
               switch (sliderIndex) {
                 case 2:
-                  updateShowCreateMapping({active:true,data:[{plaidTags:trans.plaidTags}],callbackArg:sliderName})
+                  updateShowCreateMapping({active:true,data:[{plaidTags:trans.plaidTags,name:trans.name,transaction_id:trans.transaction_id}],callbackArg:sliderName})
                   break;
                 case 0:
                   updateActiveTransactionId(trans.id)

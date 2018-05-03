@@ -10,26 +10,31 @@ import BudgetTable from './components/BudgetTable'
 import AddBudget from './components/AddBudget'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
+import BudgetList from './components/BudgetList'
 //ACTIONS//
 import {updateBudget,toggleAddBudget} from './actions'
 import {updateCategories} from 'CategoryManager/actions'
-
+//HOC//
+  import Mobile from 'HOC/mobile'
 const BudgetManager =
   ({
     budget,updateBudget,
     categories,updateCategories,
     toggleAddBudget,
     month,updateMonth,
+    isMobile,
     ...props
   }) => {
-    return (
-      <BudgetTable
-        budget={budget.data}
-        loading={budget.requesting}
-        callback={()=>{updateBudget(month),updateCategories()}}
-        categories={categories}
-      >
-        <div style={{position:'relative'}}>
+    return isMobile?
+      <BudgetList/>:
+      (
+        <BudgetTable
+          budget={budget.data}
+          loading={budget.requesting}
+          callback={()=>{updateBudget(month),updateCategories()}}
+          categories={categories}
+        >
+          <div style={{position:'relative'}}>
           <SelectField
             floatingLabelText="Month"
             value={month}
@@ -50,8 +55,8 @@ const BudgetManager =
             style={{display:'inline-block',transform:'translateY(-20px)'}}
           />
         </div>
-      </BudgetTable>
-    )
+        </BudgetTable>
+      )
 }
 
 // TextInput.propTypes={
@@ -70,11 +75,12 @@ function matchDispatchToProps(dispatch){
 }
 
 export default compose(
+  Mobile(),
   connect(mapStateToProps, matchDispatchToProps),
   withState('month','updateMonth',moment().month()),
   lifecycle({
     componentDidMount(){
-      this.props.updateBudget(moment().month(),moment().year())
+      this.props.updateBudget(moment().month()-1,moment().year())
       this.props.updateCategories()
     }
   })
