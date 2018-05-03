@@ -76,8 +76,11 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
         title=''
         iconElementLeft={<OinkLogo width={80}/>}
         iconElementRight={<NavigationMenu isLoggedIn={user.data.isLoggedIn}/>}
+        style={{position:'fixed',maxHeight:64}}
       />
-    {switchPage()}
+    <div style={{paddingTop:64}}>
+      {switchPage()}
+    </div>
     {!user.data.isLoggedIn && <Login routeTo={updatePage} page={page}/>}
     </MuiThemeProvider>
   )
