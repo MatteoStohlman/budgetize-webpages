@@ -1,10 +1,10 @@
 {
-  "short_name": "Budgetize",
-  "name": "Budgetize Swipe Track",
+  "short_name": "Oink",
+  "name": "Oink, better than mint",
   "icons": [
     {
       "src": "oink.png",
-      "sizes": "192x192",
+      "sizes": "299x208",
       "type": "image/png"
     }
   ],
