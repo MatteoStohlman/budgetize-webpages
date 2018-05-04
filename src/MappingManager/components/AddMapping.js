@@ -7,7 +7,6 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import Paper from 'material-ui/Paper'
 import {Row,Col} from 'react-bootstrap'
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import {toast} from 'react-toastify'
 import CircularProgress from 'material-ui/CircularProgress';
@@ -19,6 +18,7 @@ import '../style.css'
   import AutoComplete from 'material-ui/AutoComplete';
   import Mobile from 'HOC/mobile'
   import FlexDialog from 'components/FlexDialog'
+  import FlatButton from 'material-ui/FlatButton';
 //ACTIONS//
 import {addMapping} from 'api/mapping'
 import {getUserCategories} from 'api/categories'

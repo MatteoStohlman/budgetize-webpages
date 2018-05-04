@@ -24,12 +24,19 @@ const initialState = {
       },
       valueTotal:0,
       sliderPercentage:0,
+    },
+    CategorizeTransaction:{
+      ...componentState()
     }
   }
 }
 
 const reducer = function loginReducer (state = initialState, action) {
   switch (action.type) {
+    case 'CATEGORIZE_TRANSACTION_REQ':
+      let retVal=JSON.parse(JSON.stringify({...state}))
+      retVal.components.CategorizeTransaction.isLoading=true
+      return retVal
     case 'UPDATE_TRANSACTION_COMPONENT':
       var retVal=JSON.parse(JSON.stringify({...state}))
       if(action.values=='DEFAULT')

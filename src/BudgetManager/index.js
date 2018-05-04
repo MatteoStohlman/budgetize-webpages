@@ -80,7 +80,7 @@ export default compose(
   withState('month','updateMonth',moment().month()),
   lifecycle({
     componentDidMount(){
-      this.props.updateBudget(moment().month()-1,moment().year())
+      this.props.updateBudget(moment().month(),moment().year())
       this.props.updateCategories()
     }
   })

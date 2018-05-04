@@ -30,3 +30,11 @@ export function splitTransaction(payload){
 		payload
 	}
 }
+export function categorizeTransaction(transactionId,categoryId,callback){
+	return{
+		type:'CATEGORIZE_TRANSACTION_REQ',
+		transactionId,
+		categoryId,
+		callback:callback
+	}
+}

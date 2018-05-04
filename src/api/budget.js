@@ -2,7 +2,7 @@ import moment from 'moment'
 export function getUserBudget(userId,month,year){
   var requestUrl='https://script.google.com/macros/s/AKfycbzyO8Lg1ciQYnhSV47k8aakSXAKSLC01v_yCZtV1FVYdjphKkM/exec?action=getUserBudget'
   requestUrl+='&userId='+(userId?userId:JSON.parse(localStorage.getItem('token')).userId)
-  requestUrl+="&month="+month
+  requestUrl+="&month="+(month-1)
   requestUrl+="&year="+year
   requestUrl+='&authorization='+JSON.parse(localStorage.getItem('token')).value
   return fetch(requestUrl,{

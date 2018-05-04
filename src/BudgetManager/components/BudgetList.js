@@ -13,6 +13,8 @@ import {DATE} from 'CONSTANTS'
   import TransactionsMenu from 'TransactionsManager/components/TransactionsMenu'
   import SplitTransaction from 'TransactionsManager/components/SplitTransaction'
   import AddNotes from 'TransactionsManager/components/AddNotes'
+  import MonthSelect from './MonthSelect'
+  import LinearProgress from 'material-ui/LinearProgress';
 //ACTIONS//
   import Loading from 'HOC/Loading'
 
@@ -52,32 +54,58 @@ const BudgetList = ({
         </Avatar>
       )
     }
+    function createNestedList(budgetLine,index){
+      var items = []
+      if(budgetLine.actual_expense){
+        items.push(
+          <ListItem
+            key={'details_'+index}
+            primaryText={
+              <span>
+                <span>Spent: <DollarValue type='fancy' value={budgetLine.actual_expense}/></span>
+                <br/>
+                <span>Budgeted: <DollarValue type='fancy' value={budgetLine.value}/></span>
+                <br/>
+                <span>Left: <DollarValue type='fancy' value={budgetLine.value-budgetLine.actual_expense}/></span>
+              </span>
+            }
+          />
+        )
+      }
+      budgetLine.transactions.map((transaction,transactionIndex)=>{
+        items.push(
+          <ListItem
+            key={'transaction_'+transactionIndex}
+            primaryText={
+              <p>{transaction.name}&nbsp;&nbsp;<DollarValue type='fancy' value={transaction.value}/></p>
+            }
+            secondaryText={moment(transaction.date).format(DATE.formats.pretty)}
+            rightIcon={<TransactionsMenu transaction={transaction} excludeOptions={['createMapping']}/>}
+          />
+        )
+      })
+      return items
+
+    }
     return (
       <div>
         <SplitTransaction/>
         <AddNotes/>
         <List>
-        <Subheader>Budget</Subheader>
+        <Subheader><MonthSelect onChange={(value)=>console.log(value)}/></Subheader>
         {budget.map((budgetLine,budgetLineIndex)=>(
           <ListItem
             style={{backgroundColor:budgetLineIndex%2?'white':grey100,padding:7}}
             key={'budgetLine_'+budgetLineIndex}
-            primaryText={<span style={{fontSize:20,marginTop:2,lineHeight:'22px'}}>{budgetLine.categoryName}</span>}
+            primaryText={
+              <span style={{fontSize:20,marginTop:2,lineHeight:'22px'}}>
+                {budgetLine.categoryName}
+              </span>
+            }
             leftAvatar={generatePercentageAvatar((budgetLine.actual_expense/budgetLine.value)*100)}
             primaryTogglesNestedList={true}
             nestedListStyle={{backgroundColor:budgetLineIndex%2?'white':grey100}}
-            nestedItems={
-              budgetLine.transactions.map((transaction,transactionIndex)=>(
-                <ListItem
-                  key={'transaction_'+transactionIndex}
-                  primaryText={
-                    <p>{transaction.name}&nbsp;&nbsp;<DollarValue type='fancy' value={transaction.value}/></p>
-                  }
-                  secondaryText={moment(transaction.date).format(DATE.formats.pretty)}
-                  rightIcon={<TransactionsMenu transaction={transaction} excludeOptions={['createMapping']}/>}
-                />
-              ))
-            }
+            nestedItems={createNestedList(budgetLine,budgetLineIndex)}
           />
         ))}
       </List>

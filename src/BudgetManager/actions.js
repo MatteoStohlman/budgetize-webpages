@@ -1,4 +1,5 @@
-export function updateBudget(month,year=2018){
+import moment from 'moment'
+export function updateBudget(month=moment().month(),year=2018){
 	return{
 		type: 'UPDATE_BUDGET_REQ',
 		month,

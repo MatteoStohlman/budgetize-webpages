@@ -4,7 +4,8 @@ import {bindActionCreators} from 'redux';
 import {withState,compose,withProps} from 'recompose';
 import PropTypes from 'prop-types';
 //COMPONENTS//
-
+  import FlatButton from 'material-ui/FlatButton';
+  import FlexDialog from 'components/FlexDialog'
 //ACTIONS//
 
 //HOC//
@@ -19,13 +20,30 @@ const COMPONENT_NAME = ({
   //PROPS
 
   //OTHER
-  isMobile,...props
+  ...props
 })=> {
-    return (
-      <TextField
-        hintText={label}
-        floatingLabelText={label}
+    const actions = [
+      <FlatButton
+        label='Add Category'
+        primary={true}
+        onClick={()=>updateShowAddCategory(true)}
+      />,
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={()=>{
+          toggle();
+          cancelCallback?cancelCallback():null;
+        }}
       />
+    ];
+    return (
+      <FlexDialog
+        title="Add A Mapping"
+        actions={actions}
+        modal={true}
+        open={isOpen}
+      >
     )
 }
 

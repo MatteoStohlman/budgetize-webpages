@@ -3,7 +3,7 @@
   import { call, put, takeLatest } from 'redux-saga/effects'
   import {toast} from 'react-toastify'
 //APIs
-  import {getTransactions,ignoreTransaction,addNotes,splitTransaction} from 'api/transactions'
+  import {getTransactions,ignoreTransaction,addNotes,splitTransaction,categorizeTransaction} from 'api/transactions'
 
 function* updateUncattedTransFlow(action){
   try {
@@ -68,11 +68,31 @@ function* splitTransactionFlow(action){
   }
 }
 
+function* categorizeTransactionFlow(action){
+  try {
+    const {categoryId,transactionId,callback} = action
+    const response = yield call(categorizeTransaction,transactionId,categoryId)
+    if(response.status){
+      if(callback)
+        yield call(callback)
+      yield put({type:'UPDATE_TRANS_REQ'})
+      yield put({type:'CATEGORIZE_TRANSACTION_SUC'})
+    }else{
+      yield put({type:'CATEGORIZE_TRANSACTION_ERR'})
+    }
+
+  } catch (error) {
+    console.log(error)
+
+  }
+}
+
 function* templateWatcher () {
   yield takeLatest('UPDATE_TRANS_REQ', updateUncattedTransFlow)
   yield takeLatest('IGNORE_TRANS_REQ', ignoreTransactionFlow)
   yield takeLatest('ADD_TRANSACTION_NOTES_REQ', addNotesFlow)
   yield takeLatest('SPLIT_TRANSACTION_REQ', splitTransactionFlow)
+  yield takeLatest('CATEGORIZE_TRANSACTION_REQ', categorizeTransactionFlow)
 }
 
 export default templateWatcher
