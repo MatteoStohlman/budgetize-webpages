@@ -12,10 +12,10 @@ import './style.css'
 
 const FlexDialog = ({isMobile,children,isLoading,...props})=> {
     const isMobileStyle_content={
-      transform: 'translate(0px, 10px)',
+      transform: 'none',
+      top:'10px',
       width:'95%',
     }
-    console.log(isMobile)
     return (
       <Dialog
         {...props}

@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 //COMPONENTS//
   import SelectField from 'material-ui/SelectField';
   import MenuItem from 'material-ui/MenuItem';
-
+  import Drawer from 'material-ui/Drawer';
+  import Menu from 'material-ui/Menu';
+  import Paper from 'material-ui/Paper';
+  import {grey700,grey400} from 'material-ui/styles/colors';
 //ACTIONS//
 
 //HOC//
@@ -17,7 +20,7 @@ const FlexSelect = ({
   //REDUX
 
   //STATE
-    value,
+    value,isDrawerOpen,updateIsDrawerOpen,
   //PROPS
     onChange,options,desktopStyle,mobileStyle,disabled,
   //OTHER
@@ -26,8 +29,8 @@ const FlexSelect = ({
     function onChangeHandler(event,index,value){
       onChange(event,index,value)
     }
+    isMobile=true
     if(!isMobile){
-      console.log('rendering desktop',options);
       return(
         <SelectField
           {...props}
@@ -36,6 +39,7 @@ const FlexSelect = ({
           style={{maxHeight:200,...desktopStyle}}
           onChange={({...props})=>onChangeHandler(...props)}
           disabled={disabled}
+          //menuStyle={{width:'100%'}}
         >
           {
             options.map((option)=>(
@@ -45,30 +49,47 @@ const FlexSelect = ({
         </SelectField>
       )
     }else{
-      console.log('rendering mobile',options);
       return (
         <div>
-          <label for="select"> {props.floatingLabelText} </label>
-          <select
-            value={value}
-            name='select'
-            style={{...mobileStyle}}
-            onChange={({...props})=>onChangeHandler(...props)}
+          <Paper style={{width:'100%',margin:'auto',marginBottom:20,padding:10,paddingLeft:40,position:'relative'}} zDepth={1} onClick={()=>updateIsDrawerOpen(true)}>
+            <span style={{position:'absolute',textTransform:'uppercase',fontSize:10,top:1,left:1,color:grey400}}>{!value?'click to add':props.floatingLabelText}</span>
+            <span style={{fontWeight:'bold',lineHeight:'50px',color:value?grey700:grey400,fontSize:20,letterSpacing:'1px'}}>
+              {value?options.filter((option)=>option.value==value)[0].name:props.floatingLabelText}
+            </span>
+          </Paper>
+          <Drawer
+            containerStyle={{position:'fixed'}}
+            width={'40%'}
+            open={isDrawerOpen}
+            docked={false}
+            openSecondary={true}
+            onChange={(event,value)=>console.log(event,value)}
+            onRequestChange={(open) => updateIsDrawerOpen(open)}
           >
+            <Menu
+              onChange={(event,value)=>{
+                updateIsDrawerOpen(false)
+                onChangeHandler(event,false,value)
+              }}
+            >
             {
               options.map((option)=>(
-                <option value={option.value}>{option.name}</option>
+                <MenuItem
+                  value={option.value}
+                  primaryText={option.name}
+                />
               ))
             }
-          </select>
+            </Menu>
+          </Drawer>
         </div>
       )
     }
 }
 
 FlexSelect.propTypes={
-  value:PropTypes.string.isRequired,
-  onChange:PropTypes.func.isRequired,
+  value:PropTypes.string,
+  onChange:PropTypes.func,
   options:PropTypes.shape([{
     name: PropTypes.string,
     value: PropTypes.string
@@ -86,6 +107,7 @@ function matchDispatchToProps(dispatch){
 }
 
 export default compose(
+  withState('isDrawerOpen','updateIsDrawerOpen',false),
   Mobile(),
   connect(mapStateToProps,matchDispatchToProps),
   Loading,

@@ -121,7 +121,6 @@ const AddBudget =
             <AddActionButton onClick={()=>toggleAddBudget(true)}/>
           }
           <FlexDialog
-            title="Add A Budget Line"
             actions={actions}
             open={isOpen}
           >
@@ -136,19 +135,15 @@ const AddBudget =
               onChange={(event,index,value)=>updateMonth(value)}
               disabled={isSubmitting}
               options={MONTHS.selectOptions}
-            >
-            </FlexSelect>
-            <AutoComplete
-              hintText="Rent, Food, Insurance"
+            />
+            <FlexSelect
               floatingLabelText="Category"
+              value={category}
               fullWidth={true}
-              dataSource={categories.map((cat)=>cat.name)}
-              onNewRequest={(value,index)=>{console.log(index>=0?categories[index]:value);updateCategory(index>=0?categories[index]:value)}}
-              onUpdateInput={(value)=>{console.log(value);updateCategory(value)}}
-              filter={AutoComplete.fuzzyFilter}
-              openOnFocus={true}
-              searchText={autocompleteValue()}
-              menuStyle={{maxHeight:200}}
+              style={{maxHeight:200}}
+              onChange={(event,index,value)=>updateCategory(value)}
+              disabled={isSubmitting}
+              options={categories.map((cat)=>({name:cat.name,value:cat.id}))}
             />
             <TextField
               hintText="200,-500"
