@@ -18,6 +18,8 @@ import {DATE} from 'CONSTANTS'
   import AddBudget from 'BudgetManager/components/AddBudget'
 //ACTIONS//
   import Loading from 'HOC/Loading'
+  import {updateBudget} from 'BudgetManager/actions'
+
 
 //COLORS//
 import {
@@ -31,7 +33,7 @@ import {
 
 const BudgetList = ({
   //REDUX
-    budget,
+    budget,updateBudget,
   //STATE
 
   //PROPS
@@ -91,7 +93,7 @@ const BudgetList = ({
         <SplitTransaction/>
         <AddNotes/>
         <List>
-        <Subheader><MonthSelect onChange={(value)=>console.log(value)}/></Subheader>
+        <Subheader><MonthSelect onChange={(value)=>updateBudget(value)}/></Subheader>
         {budget.map((budgetLine,budgetLineIndex)=>(
           <ListItem
             style={{backgroundColor:budgetLineIndex%2?'white':grey100,padding:7}}
@@ -122,7 +124,7 @@ const mapStateToProps = state => ({
 })
 function matchDispatchToProps(dispatch){
   return  bindActionCreators({
-
+    updateBudget:updateBudget,
   },dispatch)
 }
 

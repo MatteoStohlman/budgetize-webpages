@@ -51,14 +51,13 @@ const BudgetManager =
                   })
                 }
               </SelectField>
-              <AddBudget
-                callback={()=>{updateBudget(month),updateCategories()}}
-                categories={categories.data}
-              />
             </div>
           </BudgetTable>
       }
-
+      <AddBudget
+        callback={()=>{updateBudget(month),updateCategories()}}
+        categories={categories.data}
+      />
     </div>
   )
 }

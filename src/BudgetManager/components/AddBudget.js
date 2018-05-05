@@ -145,8 +145,8 @@ const AddBudget =
               floatingLabelText="Category"
               fullWidth={true}
               dataSource={categories.map((cat)=>cat.name)}
-              onNewRequest={(value,index)=>{updateCategory(index>=0?categories[index]:value)}}
-              onUpdateInput={(value)=>updateCategory(value)}
+              onNewRequest={(value,index)=>{console.log(index>=0?categories[index]:value);updateCategory(index>=0?categories[index]:value)}}
+              onUpdateInput={(value)=>{console.log(value);updateCategory(value)}}
               filter={AutoComplete.fuzzyFilter}
               openOnFocus={true}
               searchText={autocompleteValue()}
