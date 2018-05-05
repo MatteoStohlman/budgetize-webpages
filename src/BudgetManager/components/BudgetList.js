@@ -62,11 +62,9 @@ const BudgetList = ({
             key={'details_'+index}
             primaryText={
               <span>
-                <span>Spent: <DollarValue type='fancy' value={budgetLine.actual_expense}/></span>
-                <br/>
-                <span>Budgeted: <DollarValue type='fancy' value={budgetLine.value}/></span>
-                <br/>
-                <span>Left: <DollarValue type='fancy' value={budgetLine.value-budgetLine.actual_expense}/></span>
+                <span style={{width:'100%',marginBottom:2,display:'inline-block'}}>Spent: <DollarValue type='fancy' value={budgetLine.actual_expense}/></span>
+                <span style={{width:'100%',marginBottom:2,display:'inline-block'}}>Budgeted: <DollarValue type='fancy' value={budgetLine.value}/></span>
+                <span style={{width:'100%',marginBottom:2,display:'inline-block'}}>Left: <DollarValue type='fancy' value={budgetLine.value-budgetLine.actual_expense}/></span>
               </span>
             }
           />

@@ -74,7 +74,7 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
     <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <AppBar
         title=''
-        iconElementLeft={<OinkLogo width={80}/>}
+        iconElementLeft={<OinkLogo height={65} style={{marginTop:-9}}/>}
         iconElementRight={<NavigationMenu isLoggedIn={user.data.isLoggedIn}/>}
         style={{position:'fixed',maxHeight:64}}
       />
