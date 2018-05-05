@@ -19,6 +19,7 @@ import {MONTHS} from 'CONSTANTS'
 import AutoComplete from 'material-ui/AutoComplete';
 import AddCategory from 'CategoryManager/components/AddCategory'
 import moment from 'moment'
+import Mobile from 'HOC/mobile'
 //API//
 import {addBudgetLine} from 'api/budget'
 //ACTIONS//
@@ -26,6 +27,7 @@ import {addBudgetLine} from 'api/budget'
 //COMPONENTS//
   import FlexDialog from 'components/FlexDialog'
   import AddActionButton from 'components/AddActionButton'
+  import FlexSelect from 'components/FlexSelect'
 
 
 const AddBudget =
@@ -42,6 +44,7 @@ const AddBudget =
     toggleAddBudget,
     showAddCategory,updateShowAddCategory,
     id,updateId,
+    isMobile,
     ...props
   }) => {
     function getCategoryId(){
@@ -125,21 +128,16 @@ const AddBudget =
             {isSubmitting &&
               <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
             }
-            <SelectField
+            <FlexSelect
               floatingLabelText="Month"
               value={month?month:initialValues?initialValues.month:''}
               fullWidth={true}
               style={{maxHeight:200}}
               onChange={(event,index,value)=>updateMonth(value)}
               disabled={isSubmitting}
+              options={MONTHS.selectOptions}
             >
-              <MenuItem value={99} primaryText={'All'}/>
-              {
-                MONTHS.full.map((month, index)=>(
-                  <MenuItem value={index} primaryText={month}/>
-                ))
-              }
-            </SelectField>
+            </FlexSelect>
             <AutoComplete
               hintText="Rent, Food, Insurance"
               floatingLabelText="Category"
@@ -180,6 +178,7 @@ function matchDispatchToProps(dispatch){
 }
 
 export default compose(
+  Mobile(),
   connect(mapStateToProps,matchDispatchToProps),
   withState('showAddCategory','updateShowAddCategory',false),
   withState('id','updateId',({initialValues})=>initialValues&&initialValues.id?initialValues.id:null),
