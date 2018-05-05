@@ -19,6 +19,7 @@ import '../style.css'
   import Mobile from 'HOC/mobile'
   import FlexDialog from 'components/FlexDialog'
   import FlatButton from 'material-ui/FlatButton';
+  import AddActionButton from 'components/AddActionButton'
 //ACTIONS//
 import {addMapping} from 'api/mapping'
 import {getUserCategories} from 'api/categories'
@@ -164,7 +165,10 @@ const AddMapping =
               callback={refreshData}
             />
           }
-          {withButton && <RaisedButton label='Add Mapping' onClick={toggle} primary={true} style={{marginRight:10,marginLeft:10}}/>}
+          {
+            withButton &&
+            <AddActionButton onClick={toggle}/>
+          }
           <FlexDialog
             title="Add A Mapping"
             actions={actions}

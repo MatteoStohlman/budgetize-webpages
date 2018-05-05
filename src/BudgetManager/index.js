@@ -17,46 +17,50 @@ import {updateCategories} from 'CategoryManager/actions'
 //HOC//
   import Mobile from 'HOC/mobile'
 const BudgetManager =
-  ({
+({
     budget,updateBudget,
     categories,updateCategories,
     toggleAddBudget,
     month,updateMonth,
     isMobile,
     ...props
-  }) => {
-    return isMobile?
-      <BudgetList/>:
-      (
-        <BudgetTable
-          budget={budget.data}
-          loading={budget.requesting}
-          callback={()=>{updateBudget(month),updateCategories()}}
-          categories={categories}
-        >
-          <div style={{position:'relative'}}>
-          <SelectField
-            floatingLabelText="Month"
-            value={month}
-            //fullWidth={true}
-            onChange={(event,index,value)=>updateMonth(value,()=>updateBudget(value))}
-            disabled={budget.requesting}
-            style={{display:'inline-block'}}
-          >
-            {
-              MONTHS.full.map((month,index)=>{
-                return(<MenuItem value={index} primaryText={month}/>)
-              })
-            }
-          </SelectField>
-          <AddBudget
+}) => {
+  return (
+    <div>
+      {
+        isMobile?
+          <BudgetList/>:
+          <BudgetTable
+            budget={budget.data}
+            loading={budget.requesting}
             callback={()=>{updateBudget(month),updateCategories()}}
-            categories={categories.data}
-            style={{display:'inline-block',transform:'translateY(-20px)'}}
-          />
-        </div>
-        </BudgetTable>
-      )
+            categories={categories}
+          >
+            <div style={{position:'relative'}}>
+              <SelectField
+                floatingLabelText="Month"
+                value={month}
+                //fullWidth={true}
+                onChange={(event,index,value)=>updateMonth(value,()=>updateBudget(value))}
+                disabled={budget.requesting}
+                style={{display:'inline-block'}}
+              >
+                {
+                  MONTHS.full.map((month,index)=>{
+                    return(<MenuItem value={index} primaryText={month}/>)
+                  })
+                }
+              </SelectField>
+              <AddBudget
+                callback={()=>{updateBudget(month),updateCategories()}}
+                categories={categories.data}
+              />
+            </div>
+          </BudgetTable>
+      }
+
+    </div>
+  )
 }
 
 // TextInput.propTypes={

@@ -6,12 +6,13 @@ import {bindActionCreators} from 'redux';
 //ACTIONS//
 import {openPlaidLink,updateBankAccounts} from 'Plaid/actions'
 //COMPONENTS//
-import RaisedButton from 'material-ui/RaisedButton';
-import {List, ListItem} from 'material-ui/List';
-import FA from 'react-fontawesome'
-import CircularProgress from 'material-ui/CircularProgress';
-import DollarValue from 'components/DollarValue'
-import PlaidLink from 'Plaid/plaidLink'
+  import RaisedButton from 'material-ui/RaisedButton';
+  import {List, ListItem} from 'material-ui/List';
+  import FA from 'react-fontawesome'
+  import CircularProgress from 'material-ui/CircularProgress';
+  import DollarValue from 'components/DollarValue'
+  import PlaidLink from 'Plaid/plaidLink'
+  import AddActionButton from 'components/AddActionButton'
 
 const Accounts = ({openPlaidLink,bankAccounts,isLoading,...props}) => {
     function positiveOrNegative(value,accountType=false){
@@ -26,7 +27,7 @@ const Accounts = ({openPlaidLink,bankAccounts,isLoading,...props}) => {
         <PlaidLink/>
         <div style={{height:'15%',width:'100%',overflow:'hidden',marginTop:0,marginBottom:0}}>
           <h2 style={{marginLeft:10}}>Accounts</h2>
-          {!isLoading && <RaisedButton label="Add Account" secondary={true} onClick={()=>openPlaidLink()} style={{position:'absolute',right:5,top:5}}/>}
+          {!isLoading && <AddActionButton style={{position:'absolute'}} onClick={()=>openPlaidLink()} mini={true}/>}
           {isLoading && <CircularProgress size={30} thickness={4} style={{position:'absolute',right:5,top:5}}/>}
         </div>
         <List style={{height:'85%',width:'100%',overflow:'auto',marginTop:0,marginBottom:0}}>

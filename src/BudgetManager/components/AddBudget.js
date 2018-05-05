@@ -25,6 +25,7 @@ import {addBudgetLine} from 'api/budget'
   import {toggleAddBudget} from 'BudgetManager/actions'
 //COMPONENTS//
   import FlexDialog from 'components/FlexDialog'
+  import AddActionButton from 'components/AddActionButton'
 
 
 const AddBudget =
@@ -113,7 +114,9 @@ const AddBudget =
               callback={callback}
             />
           }
-          {withButton && <RaisedButton label='Add Budget Line' onClick={()=>toggleAddBudget(true)} primary={true} style={{marginLeft:10}}/>}
+          {withButton &&
+            <AddActionButton onClick={()=>toggleAddBudget(true)}/>
+          }
           <FlexDialog
             title="Add A Budget Line"
             actions={actions}
@@ -130,6 +133,7 @@ const AddBudget =
               onChange={(event,index,value)=>updateMonth(value)}
               disabled={isSubmitting}
             >
+              <MenuItem value={99} primaryText={'All'}/>
               {
                 MONTHS.full.map((month, index)=>(
                   <MenuItem value={index} primaryText={month}/>
@@ -178,9 +182,9 @@ function matchDispatchToProps(dispatch){
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
   withState('showAddCategory','updateShowAddCategory',false),
-  withState('id','updateId',({initialValues})=>initialValues&&initialValues.id?initialValues.id:false),
+  withState('id','updateId',({initialValues})=>initialValues&&initialValues.id?initialValues.id:null),
   withState('month','updateMonth',({initialValues})=>initialValues&&initialValues.month?initialValues.month:moment().format('M')-1),
-  withState('category','updateCategory',({initialValues})=>initialValues && initialValues.category?initialValues.category:false),
-  withState('value','updateValue',({initialValues})=>initialValues&&initialValues.value?initialValues.value:false),
+  withState('category','updateCategory',({initialValues})=>initialValues && initialValues.category?initialValues.category:null),
+  withState('value','updateValue',({initialValues})=>initialValues&&initialValues.value?initialValues.value:null),
   withState('isSubmitting','updateIsSubmitting',false)
 )(AddBudget)

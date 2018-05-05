@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import darkBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import oinkTheme from './theme.js'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './style.css'
 //Components//
@@ -70,8 +71,9 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
         return(<h1>Default. Selected: {page}</h1>)
     }
   }
+  console.log(oinkTheme);
   return (
-    <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+    <MuiThemeProvider muiTheme={getMuiTheme(oinkTheme)}>
       <AppBar
         title=''
         iconElementLeft={<OinkLogo height={65} style={{marginTop:-9}}/>}

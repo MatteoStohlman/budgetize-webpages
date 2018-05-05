@@ -15,6 +15,7 @@ import {DATE} from 'CONSTANTS'
   import AddNotes from 'TransactionsManager/components/AddNotes'
   import MonthSelect from './MonthSelect'
   import LinearProgress from 'material-ui/LinearProgress';
+  import AddBudget from 'BudgetManager/components/AddBudget'
 //ACTIONS//
   import Loading from 'HOC/Loading'
 
