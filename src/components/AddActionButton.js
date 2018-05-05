@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
   import Loading from 'HOC/Loading'
   import Mobile from 'HOC/mobile'
 
-const COMPONENT_NAME = ({
+const AddActionButton = ({
   //REDUX
 
   //STATE
@@ -32,8 +32,8 @@ const COMPONENT_NAME = ({
     )
 }
 
-COMPONENT_NAME.propTypes={
-  label:PropTypes.string.isRequired
+AddActionButton.propTypes={
+  //label:PropTypes.string.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -51,4 +51,4 @@ export default compose(
   Loading,
   withProps(props=>{return{loading:false}}),
   //withState('activeTab','updateActiveTab','search')
-)(COMPONENT_NAME)
+)(AddActionButton)

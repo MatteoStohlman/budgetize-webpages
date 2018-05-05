@@ -20,6 +20,7 @@ const FlexDialog = ({isMobile,children,isLoading,...props})=> {
       <Dialog
         {...props}
         contentStyle={isMobile?{...props.contentStyle,...isMobileStyle_content}:{...props.contentStyle}}
+        containerStyle={{height:isMobile?'100vh':'auto',...props.contentStyle}}
         className={isMobile?props.className+' mobile-dialog-root':props.className}
         modal={props.modal?props.modal:true}
       >

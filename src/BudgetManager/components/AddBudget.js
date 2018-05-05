@@ -107,6 +107,7 @@ const AddBudget =
       else
         return false
     }
+    console.log('running addbudget',initialValues);
     return (
         <div style={style} className={className}>
           {showAddCategory &&
@@ -120,6 +121,7 @@ const AddBudget =
           {withButton &&
             <AddActionButton onClick={()=>toggleAddBudget(true)}/>
           }
+          {console.log('rerender add budget')}
           <FlexDialog
             actions={actions}
             open={isOpen}
@@ -132,7 +134,7 @@ const AddBudget =
               value={month?month:initialValues?initialValues.month:''}
               fullWidth={true}
               style={{maxHeight:200}}
-              onChange={(event,index,value)=>updateMonth(value)}
+              onChange={(event,index,selectedValue)=>updateMonth(selectedValue)}
               disabled={isSubmitting}
               options={MONTHS.selectOptions}
             />
@@ -141,17 +143,19 @@ const AddBudget =
               value={category}
               fullWidth={true}
               style={{maxHeight:200}}
-              onChange={(event,index,value)=>updateCategory(value)}
+              onChange={(event,index,selectedValue)=>updateCategory(selectedValue)}
               disabled={isSubmitting}
-              options={categories.map((cat)=>({name:cat.name,value:cat.id}))}
+              options={categories.map((cat)=>({name:cat.name,selectedValue:cat.id}))}
             />
             <TextField
               hintText="200,-500"
               floatingLabelText="Budget Value"
               fullWidth={true}
+              type='number'
               value={value?value:initialValues.value?initialValues.value:''}
               onChange={(event,value)=>updateValue(value)}
               disabled={isSubmitting}
+              disableAutoFocus={false}
             />
           </FlexDialog>
         </div>
@@ -179,6 +183,6 @@ export default compose(
   withState('id','updateId',({initialValues})=>initialValues&&initialValues.id?initialValues.id:null),
   withState('month','updateMonth',({initialValues})=>initialValues&&initialValues.month?initialValues.month:moment().format('M')-1),
   withState('category','updateCategory',({initialValues})=>initialValues && initialValues.category?initialValues.category:null),
-  withState('value','updateValue',({initialValues})=>initialValues&&initialValues.value?initialValues.value:null),
+  withState('value','updateValue',({initialValues})=>initialValues&&initialValues.value?initialValues.value:0),
   withState('isSubmitting','updateIsSubmitting',false)
 )(AddBudget)

@@ -67,14 +67,16 @@ const FlexSelect = ({
             onRequestChange={(open) => updateIsDrawerOpen(open)}
           >
             <Menu
+              disableAutoFocus={true}
               onChange={(event,value)=>{
                 updateIsDrawerOpen(false)
                 onChangeHandler(event,false,value)
               }}
             >
             {
-              options.map((option)=>(
+              options.map((option,index)=>(
                 <MenuItem
+                  key={index+"_"+option.value}
                   value={option.value}
                   primaryText={option.name}
                 />
