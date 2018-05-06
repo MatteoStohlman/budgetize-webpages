@@ -24,13 +24,15 @@ import './style.css'
   import IconButton from 'material-ui/IconButton';
   import SvgIcon from 'material-ui/SvgIcon';
   import FA from 'react-fontawesome'
+  import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+  import Paper from 'material-ui/Paper';
 
   import OinkLogo from './logo'
 
 //ACTIONS//
   import {logout} from 'Login/actions'
 
-const Home = ({page,updatePage,user,logout,notifications}) => {
+const Home = ({page,updatePage,user,logout,notifications,selectedPageIndex,updateSelectedPageIndex}) => {
   const NavigationMenu = ({isLoggedIn}) => (
     <IconMenu
       iconButtonElement={
@@ -51,17 +53,59 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
       {!isLoggedIn && <MenuItem primaryText='Login' onClick={()=>updatePage('Login')}/>}
     </IconMenu>
   );
+  var menuItems = ['Mapping','Categories','Home','Budget','Transactions'];
+  const BottomMenu = () =>(
+    <Paper zDepth={1} style={{position:'fixed',bottom:0}}>
+      <BottomNavigation selectedIndex={selectedPageIndex}>
+        <BottomNavigationItem
+          label={menuItems[0]}
+          icon={<SvgIcon><FA name='map-signs' size='2x'/></SvgIcon>}
+          onClick={() =>{
+            updateSelectedPageIndex(0);
+          }}
+        />
+        <BottomNavigationItem
+          label={menuItems[1]}
+          icon={<SvgIcon><FA name='columns' size='2x'/></SvgIcon>}
+          onClick={() =>{
+            updateSelectedPageIndex(1);
+          }}
+        />
+        <BottomNavigationItem
+          label={menuItems[2]}
+          icon={<SvgIcon><FA name='home' size='2x'/></SvgIcon>}
+          onClick={() =>{
+            updateSelectedPageIndex(2);
+          }}
+        />
+        <BottomNavigationItem
+          label={menuItems[3]}
+          icon={<SvgIcon><FA name='list-ol' size='2x'/></SvgIcon>}
+          onClick={() =>{
+            updateSelectedPageIndex(3);
+          }}
+        />
+        <BottomNavigationItem
+          label={menuItems[4]}
+          icon={<SvgIcon><FA name='dollar-sign' size='2x'/></SvgIcon>}
+          onClick={() =>{
+            updateSelectedPageIndex(4);
+          }}
+        />
+      </BottomNavigation>
+    </Paper>
+  )
   function switchPage(){
-    switch(page){
+    switch(menuItems[selectedPageIndex]){
       case 'Home':
         return(<Dashboard routeTo={updatePage}/>)
-      case 'CategoryManager':
+      case 'Categories':
         return <CategoryManager routeTo={updatePage}/>
-      case 'MappingManager':
+      case 'Mapping':
         return <MappingManager routeTo={updatePage}/>
-      case 'TransactionsManager':
+      case 'Transactions':
         return <TransactionsManager routeTo={updatePage}/>
-      case 'BudgetManager':
+      case 'Budget':
         return <BudgetManager routeTo={updatePage}/>
       case 'Login':
         return <Login routeTo={updatePage}/>
@@ -84,6 +128,7 @@ const Home = ({page,updatePage,user,logout,notifications}) => {
       {switchPage()}
     </div>
     {!user.data.isLoggedIn && <Login routeTo={updatePage} page={page}/>}
+    {user.data.isLoggedIn &&  <BottomMenu/>}
     </MuiThemeProvider>
   )
 }
@@ -104,4 +149,5 @@ function matchDispatchToProps(dispatch){
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
   withState('page','updatePage','BudgetManager'),
+  withState('selectedPageIndex','updateSelectedPageIndex',2),
 )(Home)

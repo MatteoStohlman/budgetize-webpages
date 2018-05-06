@@ -24,7 +24,7 @@ const AddActionButton = ({
 })=> {
     return (
       <FloatingActionButton
-        style={{position:'fixed',bottom:10,right:10,zIndex:10,...style}}
+        style={{position:'fixed',bottom:70,right:10,zIndex:10,...style}}
         {...props}
       >
         <ContentAdd />
