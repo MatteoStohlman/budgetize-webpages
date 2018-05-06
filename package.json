@@ -7,6 +7,7 @@
     "@okta/okta-signin-widget": "^2.8.0",
     "history": "^4.7.2",
     "material-ui": "^0.20.0",
+    "mkdirp": "^0.5.1",
     "moment": "^2.22.1",
     "node-sass": "^4.9.0",
     "node-sass-chokidar": "^1.2.2",
