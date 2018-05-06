@@ -21,7 +21,7 @@
     "react-plaid": "^0.1.1",
     "react-plaid-link": "^0.1.9",
     "react-redux": "^5.0.7",
-    "react-router": "^4.2.0",
+    "react-router": "^4.0.0-alpha.4",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.14",
     "react-slick": "^0.23.1",
