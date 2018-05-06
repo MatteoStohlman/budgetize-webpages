@@ -43,7 +43,7 @@ const Login = ({email,password,login,updateEmail,updatePassword,routeTo,page,isL
           actions={actions}
           modal={true}
           open={true}
-          //overlayStyle={{backgroundColor:'rgb(255,255,255,1)'}}
+          hideBackIcon={true}
         >
           {isLoggingIn && <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>}
           <TextField
