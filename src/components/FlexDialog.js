@@ -20,7 +20,7 @@ const FlexDialog = ({
   //HOC//
   isMobile,isLoading,
   //PROPS//
-  forceDesktop,children,toggle,title,hideBackIcon,
+  forceDesktop,children,toggle,title,hideBackIcon,actions,
   //OTHER//
   ...props
 })=> {
@@ -56,6 +56,9 @@ const FlexDialog = ({
             />
             <div style={{padding:15}}>
               {children}
+            </div>
+            <div>
+              {actions.map((action)=>(action))}
             </div>
           </Dock>
       )
