@@ -125,10 +125,10 @@ const AddBudget =
           <FlexDialog
             actions={actions}
             open={isOpen}
+            toggle={(override=null)=>toggleAddBudget(override!=null?override:!isOpen)}
+            isLoading={isSubmitting}
+            title=''
           >
-            {isSubmitting &&
-              <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
-            }
             <FlexSelect
               floatingLabelText="Month"
               value={month?month:initialValues?initialValues.month:''}
@@ -145,7 +145,7 @@ const AddBudget =
               style={{maxHeight:200}}
               onChange={(event,index,selectedValue)=>updateCategory(selectedValue)}
               disabled={isSubmitting}
-              options={categories.map((cat)=>({name:cat.name,selectedValue:cat.id}))}
+              options={categories.map((cat)=>({name:cat.name,value:cat.id}))}
             />
             <TextField
               hintText="200,-500"

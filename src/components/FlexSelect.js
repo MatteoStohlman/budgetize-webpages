@@ -29,7 +29,6 @@ const FlexSelect = ({
     function onChangeHandler(event,index,value){
       onChange(event,index,value)
     }
-    isMobile=true
     if(!isMobile){
       return(
         <SelectField
@@ -49,6 +48,7 @@ const FlexSelect = ({
         </SelectField>
       )
     }else{
+      console.log(options);
       return (
         <div>
           <Paper style={{width:'100%',margin:'auto',marginBottom:20,padding:10,paddingLeft:40,position:'relative'}} zDepth={1} onClick={()=>updateIsDrawerOpen(true)}>
@@ -69,6 +69,7 @@ const FlexSelect = ({
             <Menu
               disableAutoFocus={true}
               onChange={(event,value)=>{
+                console.log(value);
                 updateIsDrawerOpen(false)
                 onChangeHandler(event,false,value)
               }}
