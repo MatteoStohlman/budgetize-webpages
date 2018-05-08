@@ -88,11 +88,6 @@ const AddBudget =
         onClick={()=>updateShowAddCategory(true)}
       />,
       <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={()=>toggleAddBudget(false)}
-      />,
-      <FlatButton
         label="Save Budget"
         secondary={true}
         onClick={handleSubmit}
@@ -141,6 +136,7 @@ const AddBudget =
             <FlexSelect
               floatingLabelText="Category"
               value={category}
+              drawerWidth='55%'
               fullWidth={true}
               style={{maxHeight:200}}
               onChange={(event,index,selectedValue)=>updateCategory(selectedValue)}

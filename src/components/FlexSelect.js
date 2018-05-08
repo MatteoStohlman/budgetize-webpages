@@ -22,7 +22,7 @@ const FlexSelect = ({
   //STATE
     value,isDrawerOpen,updateIsDrawerOpen,
   //PROPS
-    onChange,options,desktopStyle,mobileStyle,disabled,
+    onChange,options,desktopStyle,mobileStyle,disabled,drawerWidth='40%',
   //OTHER
     isMobile,...props
 })=> {
@@ -58,8 +58,8 @@ const FlexSelect = ({
             </span>
           </Paper>
           <Drawer
-            containerStyle={{position:'fixed'}}
-            width={'40%'}
+            containerStyle={{position:'fixed',overflowX:'hidden'}}
+            width={drawerWidth}
             open={isDrawerOpen}
             docked={false}
             openSecondary={true}

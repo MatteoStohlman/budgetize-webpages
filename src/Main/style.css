@@ -2,3 +2,17 @@
   position: absolute !important;
   top: -3px;
   right: -3px; }
+
+#lastLabel {
+  margin-left: -10px !important; }
+
+.bottomNavMenu {
+  position: fixed;
+  width: 168px;
+  max-height: 300;
+  overflow-y: auto;
+  overflow-x: hidden;
+  bottom: 58px !important;
+  right: 0px !important;
+  left: auto !important;
+  top: auto !important; }

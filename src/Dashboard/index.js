@@ -15,13 +15,24 @@ import AddBudget from 'BudgetManager/components/AddBudget'
 //ACTIONS//
   import {updateNotifications} from 'Notifications/actions'
 
-const Home = ({page,updatePage,routeTo,updateNotifications,categories}) => {
-    var defaultLayout = [
-      {i: 'AddAccount', x: 6, y: 0, w: 7, h: 12},
-      {i: 'Notifications', x: 0, y: 0, w: 5, h: 15},
-    ];
+//HOC//
+  import Mobile from 'HOC/mobile'
+
+const Home = ({page,updatePage,routeTo,updateNotifications,categories,isMobile}) => {
+    var defaultLayout =
+      isMobile?
+      [
+        {i: 'AddAccount', x: 0, y: 6, w: 12, h: 12},
+        {i: 'Notifications', x: 0, y: 0, w: 12, h: 5},
+      ]
+      :
+      [
+        {i: 'AddAccount', x: 6, y: 0, w: 7, h: 12},
+        {i: 'Notifications', x: 0, y: 0, w: 5, h: 15},
+      ]
     var draggableDivStyle={
-      overflow:'hidden',
+      overflowX:'hidden',
+      overflowY:'auto',
     }
     function updateLayoutCache(param){
       localStorage.setItem('dashboard_layout', JSON.stringify(param))
@@ -36,6 +47,8 @@ const Home = ({page,updatePage,routeTo,updateNotifications,categories}) => {
     return (
       <div>
         <GridLayout
+          isDraggable={isMobile?false:true}
+          isResizable={isMobile?false:true}
           className="layout"
           layout={getLayout()}
           cols={12}
@@ -61,6 +74,7 @@ function matchDispatchToProps(dispatch){
 }
 
 export default compose(
+  Mobile(),
   connect(mapStateToProps, matchDispatchToProps),
   //withState('page','updatePage','BudgetManager'),
 )(Home)
