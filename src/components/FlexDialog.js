@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {withState,compose} from 'recompose';
 import PropTypes from 'prop-types';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import './style.css'
 //HOCS//
   import Mobile from 'HOC/mobile'
@@ -15,6 +16,7 @@ import './style.css'
   import IconButton from 'material-ui/IconButton';
   import SvgIcon from 'material-ui/SvgIcon';
   import FA from 'react-fontawesome'
+  import Paper from 'material-ui/Paper';
 
 const FlexDialog = ({
   //HOC//
@@ -22,7 +24,7 @@ const FlexDialog = ({
   //PROPS//
   forceDesktop,children,toggle,title,hideBackIcon,actions,
   //OTHER//
-  ...props
+  muiTheme,...props
 })=> {
     const isMobileStyle_content={
       transform: 'none',
@@ -38,26 +40,28 @@ const FlexDialog = ({
             isVisible={props.open}
             defaultSize='50%'
             onVisibleChange={(toggleTo)=>toggle?toggle(toggleTo):false}
+            zIndex={1200}
           >
             {isLoading &&
               <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
             }
+            <Paper style={{backgroundColor:muiTheme.palette.primary.dark,height:15}} rounded={false} zDepth={1} />
             <AppBar
-              title={<span>{title}</span>}
-              titleStyle={{lineHeight:'auto',marginLeft:20}}
-              iconStyleLeft={{marginTop:3,marginRight:0,marginBottom:0,marginLeft:'-16px',display:hideBackIcon?'none':'auto'}}
+              title={<span>{title.toUpperCase()}</span>}
+              titleStyle={{lineHeight:'40px',marginLeft:20,fontSize:20}}
+              iconStyleLeft={{marginTop:7,marginRight:0,marginBottom:0,marginLeft:'-16px',display:hideBackIcon?'none':'auto'}}
               iconElementLeft={
                 !hideBackIcon &&
-                <SvgIcon onClick={()=>toggle(false)}>
+                <SvgIcon onClick={()=>toggle?toggle(false):null}>
                   <FA name='arrow-left' size='2x' style={{color:'white'}}/>
                 </SvgIcon>
               }
-              style={{height:30,marginBottom:20}}
+              style={{height:40,marginBottom:20,backgroundColor:muiTheme.palette.primary.main}}
             />
-            <div style={{padding:15}}>
+          <div style={{padding:15,zIndex:1201}}>
               {children}
             </div>
-            <div>
+            <div style={{textAlign:'right'}}>
               {actions.map((action)=>(action))}
             </div>
           </Dock>
@@ -95,6 +99,7 @@ function matchDispatchToProps(dispatch){
 
 export default compose(
   Mobile(),
+  muiThemeable(),
   //connect(mapStateToProps,matchDispatchToProps),
   //withState('activeTab','updateActiveTab','search')
 )(FlexDialog)

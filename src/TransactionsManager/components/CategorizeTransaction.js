@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
   import FlatButton from 'material-ui/FlatButton';
   import FlexDialog from 'components/FlexDialog'
   import SelectField from 'material-ui/SelectField';
+  import FlexSelect from 'components/FlexSelect'
   import MenuItem from 'material-ui/MenuItem';
 //ACTIONS//
   import {categorizeTransaction} from 'TransactionsManager/actions'
@@ -48,18 +49,18 @@ const CategorizeTransaction = ({
         actions={actions}
         modal={true}
         open={isOpen}
+        toggle={(toggleTo)=>{
+          toggle(toggleTo);
+          cancelCallback?cancelCallback():null;
+        }}
       >
-        <SelectField
-          floatingLabelText="Select a Category"
+        <FlexSelect
+          floatingLabelText="Category"
+          drawerWidth='55%'
           value={categoryId}
           onChange={(event,index,value)=>updateCategoryId(value)}
-        >
-        {
-          categories.map((category)=>(
-            <MenuItem value={category.id} primaryText={category.name} />
-          ))
-        }
-        </SelectField>
+          options={categories.map((cat)=>({name:cat.name,value:cat.id}))}
+        />
       </FlexDialog>
     )
 }

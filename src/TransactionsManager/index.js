@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
   import TransactionsTable from './components/TransactionsTable'
   import Toggle from 'material-ui/Toggle';
   import Mobile from 'HOC/mobile'
-  import TransactionsList from 'TransactionsManager/components/TransactionsList'
+  import TransactionsList from 'TransactionsManager/components/TransactionsListNoSwipe'
   import AddNotes from 'TransactionsManager/components/AddNotes'
   import SplitTransaction from 'TransactionsManager/components/SplitTransaction'
 //ACTIONS//

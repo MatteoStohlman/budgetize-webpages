@@ -20,6 +20,8 @@ import '../style.css'
   import FlexDialog from 'components/FlexDialog'
   import FlatButton from 'material-ui/FlatButton';
   import AddActionButton from 'components/AddActionButton'
+  import FlexSelect from 'components/FlexSelect'
+  import FlexWrapper from 'components/FlexWrapper'
 //ACTIONS//
 import {addMapping} from 'api/mapping'
 import {getUserCategories} from 'api/categories'
@@ -174,53 +176,53 @@ const AddMapping =
             actions={actions}
             modal={true}
             open={isOpen}
+            toggle={(toggleTo)=>{
+              toggle(toggleTo);
+              cancelCallback?cancelCallback():null;
+            }}
           >
             {isSubmitting &&
               <CircularProgress size={60} thickness={7} style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-30px,-30px)'}}/>
             }
-            <SelectField
+            <FlexSelect
               floatingLabelText="Match Type"
               value={matchType?matchType:initialValues?initialValues.matchType:''}
               fullWidth={true}
               onChange={(event,index,value)=>handleMatchTypeSelect(value)}
               disabled={isSubmitting}
-            >
-              <MenuItem value={'id'} primaryText="Transaction Only" secondaryText={!isMobile?'use this to map an individual transaction':''}/>
-              <MenuItem value={'plaidTag'} primaryText="Smart Categories" secondaryText={!isMobile?'use this for the smartest type of matching':''}/>
-              <MenuItem value={'name'} primaryText="Transaction Name" secondaryText={!isMobile?'use this for a more customized match':''}/>
-            </SelectField>
+              drawerWidth='55%'
+              options={[
+                {value:'id',name:'Transaction Only',props:{secondaryText:!isMobile?'use this to map an individual transaction':''}},
+                {value:'plaidTag',name:'Oink Smart Categories',props:{secondaryText:!isMobile?'use this for the smartest type of matching':''}},
+                {value:'name',name:'Transaction Name',props:{secondaryText:!isMobile?'use this for a more customized match':''}},
+              ]}
+            />
             {/*autocompleteValue() && ['plaidTag','name'].indexOf(getMatchType())>=0*/}
             {showAutocomplete &&
-              <AutoComplete
-                hintText="..."
-                floatingLabelText="Keyword"
-                fullWidth={true}
-                dataSource={autocompleteArray?autocompleteArray:[]}
-                onUpdateInput={(value)=>{console.log(value);updateKeyword(value)}}
-                onNewRequest={(value)=>updateKeyword(value)}
-                filter={AutoComplete.fuzzyFilter}
-                openOnFocus={true}
-                //searchText={autocompleteValue()}
-                menuStyle={{maxHeight:200}}
-              />
+              <FlexWrapper label='Match on Keyword'>
+                <AutoComplete
+                  hintText="..."
+                  floatingLabelText="Keyword"
+                  fullWidth={true}
+                  dataSource={autocompleteArray?autocompleteArray:[]}
+                  onUpdateInput={(value)=>{console.log(value);updateKeyword(value)}}
+                  onNewRequest={(value)=>updateKeyword(value)}
+                  filter={AutoComplete.fuzzyFilter}
+                  openOnFocus={true}
+                  //searchText={autocompleteValue()}
+                  menuStyle={{maxHeight:200}}
+                />
+              </FlexWrapper>
             }
-            <SelectField
+            <FlexSelect
               floatingLabelText="Category"
               value={category?category:initialValues?initialValues.category:''}
               fullWidth={true}
               onChange={(event,index,value)=>{console.log(value);updateCategory(value)}}
               disabled={isSubmitting}
-            >
-            {
-              categories.length?
-                categories.map((category)=>{
-                  return(
-                    <MenuItem value={category.id} primaryText={category.name}/>
-                  )
-                }):
-                null
-            }
-            </SelectField>
+              drawerWidth='55%'
+              options={categories.map((cat)=>({name:cat.name,value:cat.id}))}
+            />
           </FlexDialog>
         </div>
     )

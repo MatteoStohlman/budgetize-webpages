@@ -42,7 +42,7 @@ const FlexSelect = ({
         >
           {
             options.map((option)=>(
-              <MenuItem value={option.value} primaryText={option.name}/>
+              <MenuItem value={option.value} primaryText={option.name} {...option.props}/>
             ))
           }
         </SelectField>

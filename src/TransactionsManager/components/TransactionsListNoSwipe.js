@@ -49,18 +49,6 @@ const TransactionsList = ({
   //OTHER//
   children,...props
 })=> {
-  const Menu = ()=>(
-    <IconMenu
-      iconButtonElement={<IconButton><MoreVertIcon/></IconButton>}
-      style={{position:'absolute',top:10,right:10}}
-      anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-      targetOrigin={{horizontal: 'left', vertical: 'top'}}
-    >
-      <MenuItem primaryText="Refresh" />
-      <MenuItem primaryText="Send feedback" />
-      <MenuItem primaryText="Settings" />
-    </IconMenu>
-  );
   const transactionWrapper={
     padding:10,
     paddingRight:45,
@@ -130,50 +118,20 @@ const TransactionsList = ({
       {children}
       {filteredTransactions && filteredTransactions.map((trans,index)=>{
         return(
-          <Slider {...sliderSettings}
-            ref={slider => (this['slider'+index] = slider)}
-            afterChange={(sliderIndex)=>{
-              console.log(sliderIndex)
-              let sliderName='slider'+index
-              console.log(sliderName)
-              switch (sliderIndex) {
-                case 2:
-                  updateShowCreateMapping({active:true,data:[{plaidTags:trans.plaidTags,name:trans.name,transaction_id:trans.transaction_id}],callbackArg:sliderName})
-                  break;
-                case 0:
-                  updateActiveTransactionId(trans.id)
-                  updateActiveSlider(sliderName)
-                  updateShowConfirmation(true)
-                  break;
-              }
-            }}
-            initialSlide={1}
-          >
-            <Paper>
-              <div style={{...actionSlide,backgroundColor:orange500,textAlign:'right'}}>
-                <h4 style={{margin:0,fontVariant:'small-caps',fontWeight:'bold'}}>Ignore Transaction</h4>
-              </div>
-            </Paper>
-            <Paper>
-              <div style={transactionWrapper}>
-                <TransactionsMenu
-                  transaction={trans}
-                  refreshCallback={refreshCallback}
-                  style={{position:'absolute',top:10,right:10}}
-                  anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                />
-                <span style={title}>{trans.name}</span>
-                <span style={subtitle}>{moment(trans.transaction_date).format(DATE.formats.pretty)}</span>
-                <span style={valueStyle}><DollarValue value={trans.value} type='fancy'/></span>
-              </div>
-            </Paper>
-            <Paper>
-              <div style={{...actionSlide,backgroundColor:green500,textAlign:'left'}}>
-                <h4 style={{margin:0,fontVariant:'small-caps',fontWeight:'bold'}}>Categorize Transaction</h4>
-              </div>
-            </Paper>
-          </Slider>
+          <Paper>
+            <div style={transactionWrapper}>
+              <TransactionsMenu
+                transaction={trans}
+                refreshCallback={refreshCallback}
+                style={{position:'absolute',top:10,right:10}}
+                anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+              />
+              <span style={title}>{trans.name}</span>
+              <span style={subtitle}>{moment(trans.transaction_date).format(DATE.formats.pretty)}</span>
+              <span style={valueStyle}><DollarValue value={trans.value} type='fancy'/></span>
+            </div>
+          </Paper>
         )
       })}
     </div>

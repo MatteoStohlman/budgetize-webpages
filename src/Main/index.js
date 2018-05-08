@@ -167,6 +167,6 @@ function matchDispatchToProps(dispatch){
 export default compose(
   connect(mapStateToProps,matchDispatchToProps),
   withState('page','updatePage','BudgetManager'),
-  withState('selectedPageIndex','updateSelectedPageIndex',2),
+  withState('selectedPageIndex','updateSelectedPageIndex',4),
   withState('bottomMenu','updateBottomMenu',false),
 )(Home)

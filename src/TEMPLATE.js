@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {withState,compose,withProps} from 'recompose';
 import PropTypes from 'prop-types';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 //COMPONENTS//
 
 //ACTIONS//
@@ -19,7 +20,7 @@ const COMPONENT_NAME = ({
   //PROPS
 
   //OTHER
-  isMobile,...props
+  muiTheme,isMobile,...props
 })=> {
     return (
       <TextField
@@ -43,6 +44,7 @@ function matchDispatchToProps(dispatch){
 }
 
 export default compose(
+  muiThemeable(),
   Mobile(),
   connect(mapStateToProps,matchDispatchToProps),
   Loading,
