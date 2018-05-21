@@ -2,18 +2,23 @@
   import React from 'react';
   import { call, put, takeLatest } from 'redux-saga/effects'
   import {toast} from 'react-toastify'
+  import moment from 'moment'
 //APIs
-  import {login} from 'api/login'
+  import {login,loginV2} from 'api/login'
   import {createAccount} from 'api/user'
 
 function* loginFlow(action){
   try {
     var {email,password} = action
-    const response = yield call(login,email,password)
-    if(response.status){
-      yield put({type:'LOGIN_SUC',data:response.payload})
+    const response = yield call(loginV2,email,password)
+    if(response.id){
+      yield put({type:'LOGIN_SUC',data:response})
       //window.location.reload()
-      localStorage.setItem('token', JSON.stringify(response.payload.token))
+      let token = response
+      token.value=token.session_token
+      token.userId=token.id
+      token.expires_at=moment().add(1,'hours').format('YYYY-MM-DD HH:mm')
+      localStorage.setItem('token', JSON.stringify(token))
     }
 
   } catch (error) {

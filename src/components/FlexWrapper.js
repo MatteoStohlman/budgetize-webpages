@@ -28,7 +28,7 @@ const FlexSelect = ({
     }else{
       return (
         <div>
-          <Paper style={{width:'100%',margin:'auto',marginBottom:20,padding:10,paddingLeft:40,position:'relative'}} zDepth={1}>
+          <Paper style={{width:'100%',margin:'auto',marginBottom:20,padding:10,position:'relative'}} zDepth={1}>
             <span style={{position:'absolute',textTransform:'uppercase',fontSize:10,top:1,left:1,color:grey400}}>{label}</span>
               {props.children}
           </Paper>

@@ -16,7 +16,7 @@
   //COMPONENTS
     import Main from './Main'
     import PlaidLink from './plaidLink'
-    import { configureHistory } from 'configureHistory'
+    import { configureHistory } from 'configureHistory.js'
 
 function onAuthRequired({history}) {
   history.push('/login');

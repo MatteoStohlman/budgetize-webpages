@@ -7,13 +7,13 @@ const initialState = {
 const reducer = (state = initialState, action)=>{
   switch (action.type) {
     case 'LOGIN_SUC':
-      if(action.data.expiredTokens.length){
-        var retVal={...state}
-        action.data.expiredTokens.map((token)=>{
-          retVal.data.push({type:'EXPIRED_ACCESS_TOKEN',data:{token:token}})
-        })
-        return retVal;
-      }
+      // if(action.data.expiredTokens.length){
+      //   var retVal={...state}
+      //   action.data.expiredTokens.map((token)=>{
+      //     retVal.data.push({type:'EXPIRED_ACCESS_TOKEN',data:{token:token}})
+      //   })
+      //   return retVal;
+      // }
     case 'UPDATE_NOTIFICATIONS_REQ':
       return {
         ...state,
